@@ -1,0 +1,106 @@
+# Political and legal jargon in plain words.
+# Every entry needs a source. *_hi / *_kn fields are verified translations; until a native
+# speaker signs them off, `review` stays "pending". Explain processes only, never opinions.
+
+- term: Gram Sabha
+  aliases: [gram sabha, village assembly, ग्राम सभा, ಗ್ರಾಮ ಸಭೆ]
+  plain: A meeting of every adult voter in the village. It decides which works the panchayat should do and who should get scheme benefits. You have the right to attend and speak.
+  plain_hi: गाँव के सभी वयस्क मतदाताओं की बैठक। इसमें तय होता है कि पंचायत कौन से काम करे और योजनाओं का लाभ किसे मिले। आपको इसमें जाने और बोलने का हक़ है।
+  plain_kn: ಗ್ರಾಮದ ಎಲ್ಲಾ ವಯಸ್ಕ ಮತದಾರರ ಸಭೆ. ಪಂಚಾಯಿತಿ ಯಾವ ಕೆಲಸ ಮಾಡಬೇಕು ಮತ್ತು ಯೋಜನೆಗಳ ಲಾಭ ಯಾರಿಗೆ ಸಿಗಬೇಕು ಎಂದು ಇಲ್ಲಿ ತೀರ್ಮಾನವಾಗುತ್ತದೆ. ನೀವು ಹೋಗಿ ಮಾತನಾಡುವ ಹಕ್ಕು ನಿಮಗಿದೆ.
+  example: Many states hold Gram Sabhas on 26 January, 1 May, 15 August and 2 October.
+  source: Constitution of India, Art. 243(b), 243A
+  review: pending
+
+- term: Sarpanch
+  aliases: [sarpanch, pradhan, mukhiya, village head, सरपंच, प्रधान, ಸರಪಂಚ್, ಅಧ್ಯಕ್ಷ]
+  plain: The elected head of the Gram Panchayat. Runs village-level works like local roads, drains, streetlights and water, using panchayat funds and state grants.
+  plain_hi: ग्राम पंचायत के चुने हुए मुखिया। गाँव की सड़क, नाली, स्ट्रीट लाइट और पानी जैसे काम पंचायत के पैसे और सरकारी अनुदान से करवाते हैं।
+  source: State Panchayati Raj Acts; Constitution of India, Part IX
+  review: pending
+
+- term: MLA
+  aliases: [mla, vidhayak, member of legislative assembly, विधायक, ಶಾಸಕ]
+  plain: Your elected member of the state assembly. Makes state laws, questions the state government, and can recommend local development works from the MLA area fund. An MLA does not run government offices directly.
+  plain_hi: राज्य विधानसभा में आपके चुने हुए प्रतिनिधि। राज्य के कानून बनाते हैं, राज्य सरकार से सवाल पूछते हैं, और विधायक निधि से इलाके के विकास कार्यों की सिफ़ारिश कर सकते हैं। वे सरकारी दफ़्तर सीधे नहीं चलाते।
+  source: Constitution of India, Art. 168-212; state MLALAD scheme guidelines
+  review: pending
+
+- term: MP
+  aliases: [mp, sansad, member of parliament, सांसद, ಸಂಸದ]
+  plain: Your elected member of Parliament (Lok Sabha). Makes national laws, questions the Union government, and can recommend local works from the MPLADS fund.
+  plain_hi: संसद (लोकसभा) में आपके चुने हुए प्रतिनिधि। देश के कानून बनाते हैं, केंद्र सरकार से सवाल पूछते हैं, और सांसद निधि (MPLADS) से इलाके के कामों की सिफ़ारिश कर सकते हैं।
+  source: Constitution of India, Art. 79-122
+  review: pending
+
+- term: MPLADS
+  aliases: [mplads, mp fund, mp lad, सांसद निधि]
+  plain: Money each MP can recommend for local works such as roads, schools or water in their area, up to Rs 5 crore a year. The district administration, not the MP, spends it and carries out the work.
+  source: MPLADS Guidelines, Ministry of Statistics and Programme Implementation
+  review: pending
+
+- term: Ordinance
+  aliases: [ordinance, अध्यादेश]
+  plain: A temporary law made by the President or Governor when Parliament or the assembly is not sitting. It lapses unless the house approves it within six weeks of meeting again.
+  source: Constitution of India, Art. 123 and 213
+  review: pending
+
+- term: Bill
+  aliases: [bill, विधेयक]
+  plain: A proposed law. It becomes a law (an Act) only after the house votes for it and the President or Governor signs it.
+  source: Constitution of India, Art. 107-111, 196-201
+  review: pending
+
+- term: Question Hour
+  aliases: [question hour, प्रश्नकाल]
+  plain: Usually the first hour of a sitting, when members ask ministers questions and ministers must answer.
+  source: Rules of Procedure and Conduct of Business in Lok Sabha
+  review: pending
+
+- term: Zero Hour
+  aliases: [zero hour, शून्यकाल]
+  plain: Time right after Question Hour when members raise urgent public issues without notice. It is a practice, not a written rule.
+  source: Lok Sabha practice
+  review: pending
+
+- term: No-confidence motion
+  aliases: [no confidence, no-confidence motion, अविश्वास प्रस्ताव]
+  plain: A vote in the house on whether the government still has majority support. If the government loses it, it must resign. In the Lok Sabha it needs support from at least 50 members to be taken up.
+  source: Lok Sabha Rules of Procedure, Rule 198
+  review: pending
+
+- term: Model Code of Conduct
+  aliases: [model code of conduct, mcc, code of conduct, आचार संहिता]
+  plain: Election rules from the Election Commission. From the day elections are announced until results, the government cannot announce new schemes or projects to win votes.
+  source: Election Commission of India
+  review: pending
+
+- term: RTI
+  aliases: [rti, right to information, सूचना का अधिकार]
+  plain: A law that lets any citizen ask a government office for information in writing. The office must reply within 30 days. People below the poverty line pay no fee.
+  plain_hi: एक कानून जिससे कोई भी नागरिक लिखकर सरकारी दफ़्तर से जानकारी माँग सकता है। दफ़्तर को 30 दिन में जवाब देना होता है। गरीबी रेखा से नीचे वालों को कोई फ़ीस नहीं देनी।
+  source: Right to Information Act, 2005, Sections 6-7
+  review: pending
+
+- term: FIR
+  aliases: [fir, first information report, एफआईआर, प्राथमिकी]
+  plain: The first written report of a serious crime, made at a police station. Police must register it and give you a free copy. You can file it at any police station; it is then sent to the right one (Zero FIR).
+  source: Bharatiya Nagarik Suraksha Sanhita, 2023, Section 173
+  review: pending
+
+- term: Affidavit
+  aliases: [affidavit, हलफ़नामा, शपथ पत्र]
+  plain: A written statement you swear is true, signed before an official. Lying in an affidavit is a crime.
+  source: General legal usage
+  review: pending
+
+- term: Lok Adalat
+  aliases: [lok adalat, लोक अदालत]
+  plain: A people's court where disputes are settled by agreement. No court fee, and the decision is final, like a court order.
+  source: Legal Services Authorities Act, 1987, Sections 19-21
+  review: pending
+
+- term: Zila Parishad
+  aliases: [zila parishad, panchayat samiti, block panchayat, जिला परिषद, पंचायत समिति]
+  plain: The panchayat bodies above the village. Panchayat Samiti works at block level, Zila Parishad at district level. They plan and fund works bigger than one village.
+  source: Constitution of India, Art. 243B
+  review: pending

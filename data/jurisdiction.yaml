@@ -1,0 +1,106 @@
+# Who holds power over what. Sources: Constitution of India, 7th Schedule (Union/State/
+# Concurrent Lists) and 11th Schedule (29 subjects that states may devolve to panchayats).
+# Which subjects are actually devolved differs by state: check your state's Panchayati Raj Act.
+# MLAs and MPs are legislators: they make laws, question governments and recommend works from
+# their area funds. Day-to-day work is done by government departments.
+
+levels:
+  panchayat:
+    label: Sarpanch / Gram Panchayat
+    summary: Village works under the 11th Schedule (roads, water, drains, streetlights, sanitation), as devolved by your state.
+  block_district:
+    label: Block Development Officer / District Collector
+    summary: Government officers who run departments and schemes locally.
+  state:
+    label: MLA / State government
+    summary: State List subjects such as police, public health, agriculture, state roads and land. MLA area fund for local works.
+  union:
+    label: MP / Union government
+    summary: Union List subjects such as railways, national highways, post, banks, defence. MPLADS fund for local works.
+
+topics:
+  - topic: village roads and drains
+    keywords: road village lane street drain gutter culvert pothole sadak सड़क नाली ರಸ್ತೆ ಚರಂಡಿ
+    who:
+      - {level: panchayat, role: "repairs and builds village roads, lanes and drains"}
+      - {level: block_district, role: "Panchayat Samiti / BDO for roads between villages"}
+      - {level: state, role: "MLA can push the PWD or recommend from the MLA fund"}
+    not_them: "MP, unless it is a national highway."
+    sources: ["11th Schedule, item 13", "7th Schedule, State List entry 13"]
+
+  - topic: national highways
+    keywords: national highway nh toll expressway राष्ट्रीय राजमार्ग
+    who:
+      - {level: union, role: "National Highways Authority of India under the Union government; raise with your MP"}
+    not_them: "Sarpanch and MLA have no power over national highways."
+    sources: ["7th Schedule, Union List entry 23"]
+
+  - topic: drinking water
+    keywords: water drinking tap handpump borewell supply paani पानी नल ನೀರು
+    who:
+      - {level: panchayat, role: "village water supply, handpumps and tanks"}
+      - {level: block_district, role: "Rural Water Supply department for larger schemes"}
+      - {level: state, role: "MLA for state water schemes"}
+    sources: ["11th Schedule, item 11", "7th Schedule, State List entry 17"]
+
+  - topic: streetlights and electricity
+    keywords: electricity power light streetlight bijli current transformer बिजली ವಿದ್ಯುತ್
+    who:
+      - {level: panchayat, role: "village streetlights"}
+      - {level: state, role: "the state electricity distribution company for supply, bills and transformers; MLA can escalate"}
+    sources: ["11th Schedule, item 14", "7th Schedule, Concurrent List entry 38"]
+
+  - topic: ration and PDS
+    keywords: ration pds ration card food grain fair price shop राशन ಪಡಿತರ
+    who:
+      - {level: panchayat, role: "monitors the local fair price shop"}
+      - {level: block_district, role: "District Supply Officer for ration cards and complaints"}
+      - {level: state, role: "state food department; MLA can escalate"}
+    sources: ["11th Schedule, item 28", "National Food Security Act, 2013"]
+
+  - topic: schools
+    keywords: school teacher education midday meal shiksha स्कूल शिक्षक ಶಾಲೆ
+    who:
+      - {level: panchayat, role: "School Management Committee and primary school upkeep where devolved"}
+      - {level: block_district, role: "Block Education Officer"}
+      - {level: state, role: "state education department; MLA"}
+    sources: ["11th Schedule, item 17", "7th Schedule, Concurrent List entry 25"]
+
+  - topic: health centre and hospital
+    keywords: hospital health phc doctor nurse medicine asha clinic अस्पताल ಆಸ್ಪತ್ರೆ
+    who:
+      - {level: panchayat, role: "sanitation and village health committee"}
+      - {level: block_district, role: "Block / District Health Officer for PHC staff and medicines"}
+      - {level: state, role: "state health department; MLA"}
+    sources: ["11th Schedule, item 23", "7th Schedule, State List entry 6"]
+
+  - topic: police and law and order
+    keywords: police fir crime theft safety thana पुलिस थाना ಪೊಲೀಸ್
+    who:
+      - {level: block_district, role: "Superintendent of Police if the station does not act"}
+      - {level: state, role: "police are under the state government; MLA can raise it"}
+    not_them: "The Sarpanch has no police powers."
+    sources: ["7th Schedule, State List entries 1-2"]
+
+  - topic: land records
+    keywords: land record khata patta mutation survey boundary bhoomi zameen ज़मीन ಭೂಮಿ ಪಹಣಿ
+    who:
+      - {level: block_district, role: "Tehsildar / Revenue office"}
+      - {level: state, role: "state revenue department; MLA"}
+    not_them: "The Sarpanch cannot change land records."
+    sources: ["7th Schedule, State List entries 18 and 45"]
+
+  - topic: railways, post office and banks
+    keywords: railway train station post office bank atm रेल डाकघर बैंक ರೈಲು ಬ್ಯಾಂಕ್
+    who:
+      - {level: union, role: "Union government subjects; raise with your MP"}
+    not_them: "Sarpanch and MLA have no power here."
+    sources: ["7th Schedule, Union List entries 22, 31, 45"]
+
+  - topic: pensions and social welfare
+    keywords: pension old age widow disability welfare पेंशन ಪಿಂಚಣಿ
+    who:
+      - {level: panchayat, role: "Gram Sabha identifies and verifies beneficiaries"}
+      - {level: block_district, role: "Social welfare officer processes applications"}
+      - {level: state, role: "state social welfare department; MLA"}
+    sources: ["11th Schedule, items 26-27"]

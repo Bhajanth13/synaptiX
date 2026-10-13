@@ -1,0 +1,72 @@
+# Expert-verified legal information cards. Information, not advice.
+# Each card must be checked by a law student/volunteer before `review: verified`.
+
+- id: minimum-wage
+  title: Minimum wage and unpaid wages
+  keywords: wage salary pay minimum unpaid less money employer contractor overtime majdoori मजदूरी ವೇತನ
+  summary: Your employer must pay at least the minimum wage fixed by your state for your kind of work, on time, and the same for men and women doing the same work. Overtime must be paid at twice the normal rate.
+  summary_hi: मालिक को आपके काम के लिए राज्य द्वारा तय न्यूनतम मज़दूरी समय पर देनी होगी, और एक जैसे काम के लिए औरत और मर्द को बराबर पैसा। ओवरटाइम का पैसा सामान्य दर से दोगुना होता है।
+  what_to_do:
+    - Keep a record of days worked and money received.
+    - Complain to the Labour Inspector-cum-Facilitator at the district labour office.
+    - Free help is available from the District Legal Services Authority.
+  escalate_to: District labour office / DLSA
+  source: Code on Wages, 2019
+  review: pending
+
+- id: free-legal-aid
+  title: Free lawyer and legal help
+  keywords: lawyer advocate free legal-aid aid court case vakil वकील ವಕೀಲ dlsa
+  summary: Women, children, SC/ST members, workers, disaster victims, people in custody and people with low income can get a free lawyer and legal advice from the Legal Services Authority.
+  summary_hi: महिलाएँ, बच्चे, SC/ST, मज़दूर, आपदा पीड़ित, हिरासत में लोग और कम आय वाले लोग विधिक सेवा प्राधिकरण से मुफ़्त वकील और कानूनी सलाह पा सकते हैं।
+  what_to_do:
+    - Go to the District Legal Services Authority (DLSA) at the district court, or the Taluk Legal Services Committee.
+    - Call the national legal aid helpline 15100.
+  escalate_to: DLSA
+  source: Legal Services Authorities Act, 1987, Section 12
+  review: pending
+
+- id: court-summons
+  title: Court summons
+  keywords: summons court notice appear hearing date samman समन ಸಮನ್ಸ್
+  summary: A summons is an order from a court to come on a given date. Do not ignore it; if you do not go, the court can issue a warrant. You can ask for a free lawyer.
+  what_to_do:
+    - Note the court, case number and date on the paper.
+    - Contact the DLSA for a free lawyer before the date.
+  escalate_to: DLSA
+  source: Bharatiya Nagarik Suraksha Sanhita, 2023
+  review: pending
+
+- id: loan-agreement
+  title: Loan agreement terms
+  keywords: loan agreement bank interest emi microfinance lender karz कर्ज़ ऋण ಸಾಲ
+  summary: Banks and regulated lenders must explain the loan terms, interest rate and all charges to you in a language you understand, and give you a copy of the agreement.
+  what_to_do:
+    - Ask for the terms in your language before signing.
+    - Complain to the lender, then to the RBI Ombudsman (cms.rbi.org.in) if unresolved.
+  escalate_to: RBI Ombudsman
+  source: RBI Fair Practices Code for lenders
+  review: pending
+
+- id: land-acquisition
+  title: Government taking land
+  keywords: land acquisition acquire notice compensation zameen जमीन भूमि अधिग्रहण ಭೂಮಿ
+  summary: When the government acquires land, it must study the social impact, hear the affected people, and pay fair compensation plus rehabilitation. For private or PPP projects, most affected landowners must consent.
+  what_to_do:
+    - Keep the notice and note the last date for objections.
+    - File objections in writing before that date.
+    - Get free legal help from the DLSA.
+  escalate_to: DLSA
+  source: Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013
+  review: pending
+
+- id: domestic-violence
+  title: Violence at home
+  keywords: violence husband beating abuse domestic dowry harassment हिंसा ದೌರ್ಜನ್ಯ
+  summary: A woman facing violence at home can get a protection order, the right to stay in the shared home, and money support. The Protection Officer helps file the case for free.
+  what_to_do:
+    - Call 181 (women's helpline) or 112 in an emergency.
+    - Contact the Protection Officer or the DLSA.
+  escalate_to: Protection Officer / 181
+  source: Protection of Women from Domestic Violence Act, 2005
+  review: pending

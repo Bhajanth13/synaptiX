@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+models/*
+!models/README.md
+.cache/
+*.wav
+.env
+training/sign/recordings/
