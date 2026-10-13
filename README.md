@@ -34,7 +34,7 @@ Photo (OCR)  ──┘                                 └─ events        ─�
 - **Sign language:** MediaPipe Holistic extracts hand and body keypoints → a small classifier maps
   them to ISL glosses → the SLM turns glosses into a sentence → normal pipeline.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/RESPONSIBLE_AI.md](docs/RESPONSIBLE_AI.md).
+See [docs/OVERVIEW.md](docs/OVERVIEW.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/RESPONSIBLE_AI.md](docs/RESPONSIBLE_AI.md). AI coding agents: read [AGENTS.md](AGENTS.md).
 
 ## Languages
 
