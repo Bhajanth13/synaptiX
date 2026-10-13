@@ -4,10 +4,10 @@
 
 1. **Retrieval first, generation last.** Answers come from verified data. The SLM only rewrites.
 2. **Deterministic where possible.** "Who has power over X" is a lookup table, not a model.
-3. **Offline first.** Everything except Sarvam TTS runs locally on a CPU; TTS output is cached so
-   verified answers can be pre-rendered while online and replayed offline.
+3. **Offline first.** Everything runs locally on a CPU, including speech (hard-coded rule-based TTS).
+   Sarvam AI voices are an optional online upgrade.
 4. **Degrade gracefully.** No SLM → verified text as-is. No translation → English, clearly marked.
-   No Sarvam → espeak-ng. No match → "I don't know, ask DLSA", never a guess.
+   No Sarvam → rule-based TTS. No match → "I don't know, ask DLSA", never a guess.
 
 ## Components
 
@@ -19,7 +19,7 @@
 | Translation | Verified per-entry translations | IndicTrans2 distilled (offline, 22 languages) |
 | SLM | llama.cpp, any 1–2B GGUF (Sarvam-1, Gemma 3 1B, Qwen 2.5 1.5B) | Fine-tune on plain-language rewrites |
 | Speech in | — | AI4Bharat IndicConformer / faster-whisper |
-| Speech out | Sarvam AI Bulbul, cached; espeak-ng fallback | Pre-rendered audio for every verified card |
+| Speech out | Hard-coded G2P rules + formant synthesizer (offline); optional Sarvam AI | Medial schwa deletion, per-language prosody, diphone concatenation |
 | Sign in | MediaPipe keypoints + nearest-centroid classifier | GRU / tiny transformer on INCLUDE + civic vocabulary |
 | OCR | — | Tesseract / IndicOCR for notices and contracts |
 

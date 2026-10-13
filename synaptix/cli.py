@@ -12,7 +12,14 @@ def main(argv=None):
     a.add_argument("text")
     a.add_argument("--lang", choices=LANGUAGES, help="language code (auto-detected from script if omitted)")
     a.add_argument("--skill", choices=["jargon", "legal", "jurisdiction", "events"])
-    a.add_argument("--speak", action="store_true", help="also write speech audio (Sarvam TTS, cached)")
+    a.add_argument("--speak", action="store_true", help="also write speech audio (offline rule-based TTS)")
+    a.add_argument("--voice", choices=["rule", "sarvam"], default="rule",
+                   help="rule = hard-coded offline synthesizer (default); sarvam = Sarvam AI cloud voices")
+
+    t = sub.add_parser("say", help="speak any text with the offline rule-based TTS")
+    t.add_argument("text")
+    t.add_argument("--lang", choices=LANGUAGES)
+    t.add_argument("--phonemes", action="store_true", help="print the phonemes too")
 
     s = sub.add_parser("signs", help="answer from a sequence of ISL glosses")
     s.add_argument("glosses", nargs="+")
@@ -23,7 +30,16 @@ def main(argv=None):
     if args.cmd == "languages":
         for code, info in LANGUAGES.items():
             voice = info["sarvam"] or f"{info['tts_fallback']} voice (fallback)"
-            print(f"{code:4} {info['name']:10} TTS: {voice}")
+            print(f"{code:4} {info['name']:10} offline TTS: yes   Sarvam: {voice}")
+        return 0
+
+    if args.cmd == "say":
+        from synaptix.core.language import detect
+        from synaptix.outputs.tts import RuleTTS
+        tts, lang = RuleTTS(), args.lang or detect(args.text)
+        if args.phonemes:
+            print(" ".join(tts.phonemes(args.text, lang)))
+        print("Audio:", tts.synthesize(args.text, lang))
         return 0
 
     from synaptix.core.pipeline import Pipeline
@@ -31,11 +47,8 @@ def main(argv=None):
     ans = pipe.ask(args.text, args.lang, args.skill) if args.cmd == "ask" else pipe.ask_signs(args.glosses)
     print(f"[{ans.skill}] " + ans.render())
     if getattr(args, "speak", False):
-        from synaptix.outputs.tts import SarvamTTS
-        try:
-            print("Audio:", SarvamTTS().synthesize(ans.text, ans.lang))
-        except RuntimeError as e:
-            print(e, file=sys.stderr)
+        from synaptix.outputs.tts import get_tts
+        print("Audio:", get_tts(args.voice).synthesize(ans.text, ans.lang))
     return 0
 
 
