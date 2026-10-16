@@ -56,7 +56,13 @@ pytest -q                           # must stay green
 synaptix ask "what is zero hour"
 synaptix ask "ग्राम सभा क्या है" --speak
 synaptix say "ಗ್ರಾಮ ಸಭೆ" --phonemes
+python scripts/download_models.py   # default SLM: Qwen2.5 1.5B Instruct Q4 (~1 GB, ~6 s per answer on a laptop CPU)
+synaptix sign-live                  # webcam ISL input (needs models/sign_classifier.npz from training/sign/)
 ```
+
+Tests set `SYNAPTIX_SLM` to a missing file (`tests/conftest.py`) so they never load the real model.
+`SLM.simplify` rejects any rewrite whose numbers differ from the verified text.
+MediaPipe uses the Tasks API (`HandLandmarker` + `PoseLandmarker`); the legacy `mp.solutions` API is gone.
 
 Python 3.12 (MediaPipe must stay `<1`; 1.x crashes on some recent Linux kernels).
 

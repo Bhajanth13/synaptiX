@@ -24,6 +24,10 @@ def main(argv=None):
     s = sub.add_parser("signs", help="answer from a sequence of ISL glosses")
     s.add_argument("glosses", nargs="+")
 
+    lv = sub.add_parser("sign-live", help="sign questions to the webcam (needs a trained classifier)")
+    lv.add_argument("--camera", type=int, default=0)
+    lv.add_argument("--lang", choices=LANGUAGES, default="en")
+
     sub.add_parser("languages", help="list supported languages")
 
     args = p.parse_args(argv)
@@ -44,7 +48,17 @@ def main(argv=None):
 
     from synaptix.core.pipeline import Pipeline
     pipe = Pipeline()
-    ans = pipe.ask(args.text, args.lang, args.skill) if args.cmd == "ask" else pipe.ask_signs(args.glosses)
+    if args.cmd == "sign-live":
+        from synaptix.inputs.sign.live import recognize
+        glosses = recognize(args.camera)
+        print("Signs:", " ".join(glosses) or "(none recognised)")
+        if not glosses:
+            return 1
+        ans = pipe.ask_signs(glosses, args.lang)
+    elif args.cmd == "ask":
+        ans = pipe.ask(args.text, args.lang, args.skill)
+    else:
+        ans = pipe.ask_signs(args.glosses)
     print(f"[{ans.skill}] " + ans.render())
     if getattr(args, "speak", False):
         from synaptix.outputs.tts import get_tts

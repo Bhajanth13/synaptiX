@@ -6,6 +6,7 @@ input through unchanged, so the rest of the pipeline still works.
 """
 
 import os
+import re
 from pathlib import Path
 
 DEFAULT_MODEL = Path(__file__).resolve().parents[2] / "models" / "slm.gguf"
@@ -44,8 +45,11 @@ class SLM:
     def simplify(self, verified_text: str, question: str) -> str:
         if not self.available:
             return verified_text
-        return self._chat(f"Question: {question}\n\nVerified text:\n{verified_text}\n\n"
-                          "Answer the question in 2-4 simple sentences using only the verified text.")
+        out = self._chat(f"Question: {question}\n\nVerified text:\n{verified_text}\n\n"
+                         "Answer the question in 2-4 simple sentences using only the verified text. "
+                         "Keep every number exactly as written.")
+        # Guardrail: a rewrite that drops, changes or invents a number is rejected.
+        return out if _numbers(out) == _numbers(verified_text) else verified_text
 
     def glosses_to_sentence(self, glosses: list[str]) -> str:
         """ISL gloss sequence (e.g. LAND NOTICE MEANING WHAT) -> English question."""
@@ -53,3 +57,7 @@ class SLM:
             return " ".join(g.lower() for g in glosses)
         return self._chat("Turn these Indian Sign Language glosses into one natural English question. "
                           f"Output only the sentence.\nGlosses: {' '.join(glosses)}", max_tokens=60)
+
+
+def _numbers(text: str) -> set[str]:
+    return set(re.findall(r"\d+(?:[.,]\d+)*", text))

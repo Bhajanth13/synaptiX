@@ -77,3 +77,15 @@ def test_sign_classifier_roundtrip():
 def test_signs_entry_point():
     a = pipe.ask_signs(["NOTICE", "SUMMONS", "COURT", "MEANING"])
     assert a.skill == "legal"
+
+
+def test_slm_rewrite_that_changes_numbers_is_rejected():
+    from synaptix.llm.slm import SLM
+
+    slm = SLM(model_path="/nonexistent")
+    slm.llm = object()  # pretend a model is loaded
+    slm._chat = lambda *a, **k: "Each MP gets some money."
+    src = "Each MP can recommend up to Rs 5 crore a year."
+    assert slm.simplify(src, "q") == src
+    slm._chat = lambda *a, **k: "Each MP can suggest up to Rs 5 crore every year."
+    assert slm.simplify(src, "q") != src

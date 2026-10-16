@@ -77,8 +77,12 @@ pytest
 Optional extras:
 
 ```bash
-uv pip install -e '.[slm]'    # small language model (put a GGUF at models/slm.gguf)
-uv pip install -e '.[sign]'   # sign-language input (MediaPipe, OpenCV)
+uv pip install -e '.[slm]'    # small language model (llama.cpp)
+python scripts/download_models.py   # Qwen2.5 1.5B Instruct, 4-bit (~1 GB) -> models/slm.gguf
+uv pip install -e '.[sign]'   # sign-language input (MediaPipe Tasks, OpenCV)
+python training/sign/record.py LAND --clips 20   # record each sign, then:
+python training/sign/train.py
+synaptix sign-live            # sign to the webcam, press q, get the answer
 export SARVAM_API_KEY=...     # optional natural voices: synaptix ask "..." --speak --voice sarvam
 ```
 
