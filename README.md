@@ -31,8 +31,10 @@ Photo (OCR)  ──┘                                 └─ events        ─�
   rewrites and simplifies; it never invents laws, numbers or schemes.
 - **Runs on a CPU.** The SLM is a 1–2B model, 4-bit GGUF via llama.cpp. Everything works even with no
   model installed (verified text is returned as-is).
-- **Sign language:** MediaPipe Holistic extracts hand and body keypoints → a small classifier maps
-  them to ISL glosses → the SLM turns glosses into a sentence → normal pipeline.
+- **Sign language:** MediaPipe extracts hand and body keypoints → a **pretrained ISL recognizer
+  (263 signs, trained on the INCLUDE dataset, numpy-only)** maps each sign to a word → the SLM turns
+  the words into a question → normal pipeline. Signs include POLICE, COURT, LAWYER, HOSPITAL,
+  DOCTOR, BANK, MONEY, JOB, SCHOOL, ELECTION, ROAD, OFFICE, PAPER and more.
 
 See [docs/OVERVIEW.md](docs/OVERVIEW.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/RESPONSIBLE_AI.md](docs/RESPONSIBLE_AI.md). AI coding agents: read [AGENTS.md](AGENTS.md).
 
@@ -80,9 +82,9 @@ Optional extras:
 uv pip install -e '.[slm]'    # small language model (llama.cpp)
 python scripts/download_models.py   # Qwen2.5 1.5B Instruct, 4-bit (~1 GB) -> models/slm.gguf
 uv pip install -e '.[sign]'   # sign-language input (MediaPipe Tasks, OpenCV)
-python training/sign/record.py LAND --clips 20   # record each sign, then:
-python training/sign/train.py
-synaptix sign-live            # sign to the webcam, press q, get the answer
+synaptix sign-live            # sign to the webcam (pretrained 263-sign model), press q, get the answer
+synaptix sign-file clip.mp4 --ask   # recognise signs in a video file
+python training/sign/train_include.py --poses Pose_Signs --splits Train_Test_Split   # retrain (needs torch)
 export SARVAM_API_KEY=...     # optional natural voices: synaptix ask "..." --speak --voice sarvam
 ```
 
@@ -107,4 +109,5 @@ native speaker verify them. Contributions of verified cards and translations are
 
 ## License
 
-[Apache License 2.0](LICENSE)
+[Apache License 2.0](LICENSE). The pretrained sign model is trained on the INCLUDE dataset
+(AI4Bharat, CC BY 4.0); see [NOTICE](NOTICE).

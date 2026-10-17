@@ -27,6 +27,14 @@ def main(argv=None):
     lv = sub.add_parser("sign-live", help="sign questions to the webcam (needs a trained classifier)")
     lv.add_argument("--camera", type=int, default=0)
     lv.add_argument("--lang", choices=LANGUAGES, default="en")
+    lv.add_argument("--model", choices=["include", "custom"], default="include",
+                    help="include = pretrained 263-sign ISL model (default); custom = your trained classifier")
+
+    sf = sub.add_parser("sign-file", help="recognise ISL signs in a video file")
+    sf.add_argument("video")
+    sf.add_argument("--model", choices=["include", "custom"], default="include")
+    sf.add_argument("--ask", action="store_true", help="send the recognised signs to the pipeline")
+    sf.add_argument("--whole", action="store_true", help="treat the whole clip as a single sign")
 
     sub.add_parser("languages", help="list supported languages")
 
@@ -46,15 +54,25 @@ def main(argv=None):
         print("Audio:", tts.synthesize(args.text, lang))
         return 0
 
+    if args.cmd == "sign-file":
+        from synaptix.inputs.sign.live import recognize_file
+        preds = recognize_file(args.video, args.model, args.whole)
+        for g, c in preds:
+            print(f"{g:15} {c:.2f}")
+        if not (args.ask and preds):
+            return 0 if preds else 1
+
     from synaptix.core.pipeline import Pipeline
     pipe = Pipeline()
     if args.cmd == "sign-live":
         from synaptix.inputs.sign.live import recognize
-        glosses = recognize(args.camera)
+        glosses = recognize(args.camera, model=args.model)
         print("Signs:", " ".join(glosses) or "(none recognised)")
         if not glosses:
             return 1
         ans = pipe.ask_signs(glosses, args.lang)
+    elif args.cmd == "sign-file":
+        ans = pipe.ask_signs([g for g, c in preds if g and c >= 0.3] or [preds[0][0]])
     elif args.cmd == "ask":
         ans = pipe.ask(args.text, args.lang, args.skill)
     else:

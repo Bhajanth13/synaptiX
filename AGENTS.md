@@ -43,9 +43,12 @@ sign video ─▶ inputs/sign/landmarks (MediaPipe) ─▶ inputs/sign/classifie
 | `synaptix/outputs/g2p.py` | Rule-based grapheme→phoneme for all Indic scripts (shared Unicode offsets) + rough English |
 | `synaptix/outputs/formant.py` | Hard-coded formant synthesizer, numpy only, 16 kHz WAV |
 | `synaptix/outputs/tts.py` | `RuleTTS` (default), `SarvamTTS` (optional, cached, falls back to RuleTTS) |
-| `synaptix/inputs/sign/` | MediaPipe keypoints (225 floats/frame), nearest-centroid sign classifier |
+| `synaptix/inputs/sign/landmarks.py` | MediaPipe Tasks hand+pose → 225 floats/frame, raw 0..1 image coords; hands assigned by nearest pose wrist |
+| `synaptix/inputs/sign/isl_model.py` | Pretrained 263-sign ISL recognizer (temporal CNN, numpy inference, `models/isl_include.npz`); `features()` is shared with training |
+| `synaptix/inputs/sign/live.py` | Segments signs by hand presence; `recognize` (webcam), `recognize_file` (video) |
+| `synaptix/inputs/sign/classifier.py` | Optional nearest-centroid classifier for your own recorded vocabulary |
 | `data/` | `glossary.yaml`, `legal_cards.yaml`, `jurisdiction.yaml`, `events.json` |
-| `training/sign/` | `record.py` (webcam → keypoints), `train.py` → `models/sign_classifier.npz` |
+| `training/sign/` | `train_include.py` (INCLUDE → `models/isl_include.npz`, needs torch), `record.py` + `train.py` for a custom vocabulary |
 
 ## Setup and commands
 
@@ -57,7 +60,8 @@ synaptix ask "what is zero hour"
 synaptix ask "ग्राम सभा क्या है" --speak
 synaptix say "ಗ್ರಾಮ ಸಭೆ" --phonemes
 python scripts/download_models.py   # default SLM: Qwen2.5 1.5B Instruct Q4 (~1 GB, ~6 s per answer on a laptop CPU)
-synaptix sign-live                  # webcam ISL input (needs models/sign_classifier.npz from training/sign/)
+synaptix sign-live                  # webcam ISL input, pretrained 263-sign model
+synaptix sign-file clip.mp4 --ask   # ISL from a video file
 ```
 
 Tests set `SYNAPTIX_SLM` to a missing file (`tests/conftest.py`) so they never load the real model.
@@ -88,4 +92,6 @@ Python 3.12 (MediaPipe must stay `<1`; 1.x crashes on some recent Linux kernels)
 ## Known limits
 
 Devanagari defaults to Hindi (pass `lang` for `mr`/`mwr`). Translation backend is a stub. Router is
-keyword-based. Sign recognition is isolated signs only, not continuous ISL. English G2P is rough.
+keyword-based. Sign recognition is isolated signs only (263-word INCLUDE vocabulary), not continuous ISL;
+pause with hands down between signs. INCLUDE pose .pkl files are loaded with a restricted unpickler
+(numpy arrays only) — never use plain `pickle.load` on downloaded data. English G2P is rough.

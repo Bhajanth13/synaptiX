@@ -29,7 +29,8 @@ class Pipeline:
 
     def ask_signs(self, glosses: list[str], lang: str = "en") -> Answer:
         """Entry point for the sign-language input: glosses -> sentence -> normal pipeline."""
-        sentence = self.slm.glosses_to_sentence(glosses)
+        from synaptix.inputs.sign.isl_model import gloss_to_word
+        sentence = self.slm.glosses_to_sentence([gloss_to_word(g).upper() for g in glosses])
         ans = self.ask(sentence, lang="en")
         if lang != "en":
             ans.text, ok = self.tr.from_english(ans.text, lang)

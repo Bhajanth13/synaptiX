@@ -1,0 +1,7 @@
+SynaptiX
+Copyright 2026 The SynaptiX authors
+
+This product includes a sign-language model (models/isl_include.npz) trained on the
+INCLUDE dataset of Indian Sign Language (Sridhar et al., ACM MM 2020), using the pose keypoints
+released by AI4Bharat OpenHands (https://github.com/AI4Bharat/OpenHands) under the
+Creative Commons Attribution 4.0 licence (https://zenodo.org/records/6674324).

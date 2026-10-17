@@ -4,6 +4,7 @@ __pycache__/
 *.egg-info/
 models/*
 !models/README.md
+!models/isl_include.npz
 .cache/
 *.wav
 .env

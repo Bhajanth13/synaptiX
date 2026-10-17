@@ -14,6 +14,7 @@ DEFAULT_MODEL = Path(__file__).resolve().parents[2] / "models" / "slm.gguf"
 SYSTEM = (
     "You rewrite civic and legal information for rural Indian citizens. "
     "Use short sentences and everyday words a person with primary-school education understands. "
+    "Write respectfully for adults: no childish words or comparisons. "
     "Only use facts from the given text; never add new facts, numbers or laws. "
     "Never give an opinion about any political party or politician. "
     "This is legal information, not legal advice."

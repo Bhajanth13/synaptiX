@@ -1,7 +1,9 @@
 """Extract hand + upper-body keypoints from video with MediaPipe Tasks (CPU).
 
-Each frame becomes a fixed 225-float vector: 21 left-hand + 21 right-hand + 33 pose points, (x, y, z).
-Missing hands are zeros. Coordinates are normalized to the shoulders so signer position/size doesn't matter.
+Each frame becomes a fixed 225-float vector: 21 left-hand + 21 right-hand + 33 pose points, (x, y, z),
+in raw image coordinates (0-1). Missing hands are zeros. Classifiers normalize (see `normalize`).
+Left/right means the signer's own hands: each detected hand is assigned to the nearer pose wrist,
+which avoids MediaPipe's mirrored-handedness convention.
 The two small .task models (~8 MB) are downloaded into models/ on first use.
 Note: pin mediapipe<1 (1.x is killed on some recent Linux kernels).
 """
@@ -52,36 +54,55 @@ def normalize(frame: np.ndarray) -> np.ndarray:
 
 
 class LandmarkExtractor:
-    def __init__(self):
+    def __init__(self, tracking: bool = False):
         import mediapipe as mp
         from mediapipe.tasks.python import BaseOptions, vision
 
         self._mp = mp
-        mode = vision.RunningMode.VIDEO
+        # Per-frame detection (IMAGE mode) found hands more reliably than VIDEO-mode tracking on
+        # INCLUDE test videos (7/9 vs 6/9 signs correct), so it is the default.
+        mode = vision.RunningMode.VIDEO if tracking else vision.RunningMode.IMAGE
         self.hands = vision.HandLandmarker.create_from_options(vision.HandLandmarkerOptions(
             base_options=BaseOptions(model_asset_path=_model("hand_landmarker.task")),
-            running_mode=mode, num_hands=2))
+            running_mode=mode, num_hands=2, min_hand_detection_confidence=0.3,
+            min_hand_presence_confidence=0.3, min_tracking_confidence=0.3))
         self.pose = vision.PoseLandmarker.create_from_options(vision.PoseLandmarkerOptions(
             base_options=BaseOptions(model_asset_path=_model("pose_landmarker_lite.task")),
             running_mode=mode))
         self._ts = 0
+        self._image_mode = mode == vision.RunningMode.IMAGE
 
     def frame(self, bgr_image) -> np.ndarray:
         import cv2
         rgb = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
         img = self._mp.Image(image_format=self._mp.ImageFormat.SRGB, data=rgb)
         self._ts += 33  # VIDEO mode needs increasing timestamps (ms)
-        h = self.hands.detect_for_video(img, self._ts)
-        p = self.pose.detect_for_video(img, self._ts)
-        left = right = None
-        for lms, hd in zip(h.hand_landmarks, h.handedness):
-            if hd[0].category_name == "Left":
-                left = lms
-            else:
-                right = lms
+        if self._image_mode:
+            h, p = self.hands.detect(img), self.pose.detect(img)
+        else:
+            h = self.hands.detect_for_video(img, self._ts)
+            p = self.pose.detect_for_video(img, self._ts)
         pose = p.pose_landmarks[0] if p.pose_landmarks else None
-        vec = np.concatenate([_points(left, 21), _points(right, 21), _points(pose, 33)]).reshape(-1)
-        return normalize(vec)
+        left = right = None
+        hands = list(zip(h.hand_landmarks, h.handedness))
+        if pose is not None and hands:
+            # pose 15 = signer's left wrist, 16 = right wrist; match hands to wrists jointly
+            def d(hand, j):
+                return (hand[0].x - pose[j].x) ** 2 + (hand[0].y - pose[j].y) ** 2
+            if len(hands) >= 2:
+                a, b = hands[0][0], hands[1][0]
+                left, right = (a, b) if d(a, 15) + d(b, 16) <= d(a, 16) + d(b, 15) else (b, a)
+            elif d(hands[0][0], 15) < d(hands[0][0], 16):
+                left = hands[0][0]
+            else:
+                right = hands[0][0]
+        else:
+            for lms, hd in hands:  # MediaPipe labels assume a mirrored image
+                if hd[0].category_name == "Right":
+                    left = lms
+                else:
+                    right = lms
+        return np.concatenate([_points(left, 21), _points(right, 21), _points(pose, 33)]).reshape(-1)
 
     def video(self, path_or_cam=0, max_frames: int = 300) -> np.ndarray:
         import cv2

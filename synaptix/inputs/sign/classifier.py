@@ -10,6 +10,8 @@ from pathlib import Path
 
 import numpy as np
 
+from synaptix.inputs.sign.landmarks import normalize
+
 T = 32
 
 
@@ -17,7 +19,7 @@ def featurize(seq: np.ndarray) -> np.ndarray:
     if len(seq) == 0:
         raise ValueError("empty sequence")
     idx = np.linspace(0, len(seq) - 1, T).round().astype(int)
-    x = seq[idx]
+    x = np.stack([normalize(f) for f in seq[idx]])
     motion = np.diff(x, axis=0, prepend=x[:1])
     v = np.concatenate([x, motion], axis=1).reshape(-1)
     return v / (np.linalg.norm(v) or 1.0)
