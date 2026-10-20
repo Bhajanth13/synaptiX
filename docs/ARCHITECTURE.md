@@ -43,8 +43,8 @@ Trained with `training/sign/train_include.py` on INCLUDE pose keypoints (3,465 t
 
 | Test | Result |
 |---|---|
-| INCLUDE test split, dataset keypoints (816 clips) | 96.6% top-1, 99.5% top-3 |
-| 28 raw INCLUDE test videos through the live pipeline, `holistic` extractor (default) | **27/28 top-1 (96%), 28/28 top-3** |
+| INCLUDE test split, dataset keypoints (816 clips) | 97.5% top-1, 99.5% top-3 (3-model ensemble, final epoch, no test-set selection) |
+| 28 raw INCLUDE test videos through the live pipeline, `holistic` extractor (default) | **27/28 top-1 (96%), 28/28 top-3** (only miss: FALL → IT, FALL 2nd) |
 | Same 28 videos, `hands` extractor (HandLandmarker + PoseLandmarker) | 23/28 top-1 (82%) |
 
 Reproduce: `training/sign/fetch_include_videos.py` then `training/sign/eval_videos.py`.
