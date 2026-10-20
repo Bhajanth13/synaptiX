@@ -43,12 +43,12 @@ sign video ─▶ inputs/sign/landmarks (MediaPipe) ─▶ inputs/sign/classifie
 | `synaptix/outputs/g2p.py` | Rule-based grapheme→phoneme for all Indic scripts (shared Unicode offsets) + rough English |
 | `synaptix/outputs/formant.py` | Hard-coded formant synthesizer, numpy only, 16 kHz WAV |
 | `synaptix/outputs/tts.py` | `RuleTTS` (default), `SarvamTTS` (optional, cached, falls back to RuleTTS) |
-| `synaptix/inputs/sign/landmarks.py` | MediaPipe Tasks hand+pose → 225 floats/frame, raw 0..1 image coords; hands assigned by nearest pose wrist |
-| `synaptix/inputs/sign/isl_model.py` | Pretrained 263-sign ISL recognizer (temporal CNN, numpy inference, `models/isl_include.npz`); `features()` is shared with training |
+| `synaptix/inputs/sign/landmarks.py` | MediaPipe → 225 floats/frame, raw 0..1 image coords. Default backend `holistic` (HolisticLandmarker, same model family the INCLUDE data was made with — much better accuracy); `hands` backend is lighter |
+| `synaptix/inputs/sign/isl_model.py` | Pretrained 263-sign ISL recognizer (ensemble of temporal CNNs, numpy inference, `models/isl_include.npz`); `features()` is shared with training |
 | `synaptix/inputs/sign/live.py` | Segments signs by hand presence; `recognize` (webcam), `recognize_file` (video) |
 | `synaptix/inputs/sign/classifier.py` | Optional nearest-centroid classifier for your own recorded vocabulary |
 | `data/` | `glossary.yaml`, `legal_cards.yaml`, `jurisdiction.yaml`, `events.json` |
-| `training/sign/` | `train_include.py` (INCLUDE → `models/isl_include.npz`, needs torch), `record.py` + `train.py` for a custom vocabulary |
+| `training/sign/` | `train_include.py` (INCLUDE → `models/isl_include.npz`, needs torch), `fetch_include_videos.py` + `eval_videos.py` (end-to-end check on raw test videos), `record.py` + `train.py` for a custom vocabulary |
 
 ## Setup and commands
 
@@ -93,5 +93,8 @@ Python 3.12 (MediaPipe must stay `<1`; 1.x crashes on some recent Linux kernels)
 
 Devanagari defaults to Hindi (pass `lang` for `mr`/`mwr`). Translation backend is a stub. Router is
 keyword-based. Sign recognition is isolated signs only (263-word INCLUDE vocabulary), not continuous ISL;
-pause with hands down between signs. INCLUDE pose .pkl files are loaded with a restricted unpickler
+pause with hands down between signs. One or two signs are routed deterministically
+(jurisdiction topic → "who handles X", else "what is X"), never through the SLM.
+The public OpenHands INCLUDE checkpoints were tried and do not work on the released pose files
+(~2% accuracy even with an exact port), which is why we train our own. INCLUDE pose .pkl files are loaded with a restricted unpickler
 (numpy arrays only) — never use plain `pickle.load` on downloaded data. English G2P is rough.

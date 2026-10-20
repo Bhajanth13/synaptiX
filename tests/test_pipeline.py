@@ -89,3 +89,10 @@ def test_slm_rewrite_that_changes_numbers_is_rejected():
     assert slm.simplify(src, "q") == src
     slm._chat = lambda *a, **k: "Each MP can suggest up to Rs 5 crore every year."
     assert slm.simplify(src, "q") != src
+
+
+def test_single_sign_routes_without_model():
+    a = pipe.ask_signs(["POLICE"])
+    assert a.skill == "jurisdiction" and "police" in a.text.lower()
+    a = pipe.ask_signs(["STREETORROAD"])
+    assert a.skill == "jurisdiction" and "road" in a.text.lower()

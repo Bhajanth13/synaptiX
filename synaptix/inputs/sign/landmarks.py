@@ -22,6 +22,7 @@ MODELS_DIR = Path(__file__).resolve().parents[3] / "models"
 _MODEL_URLS = {
     "hand_landmarker.task": "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task",
     "pose_landmarker_lite.task": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task",
+    "holistic_landmarker.task": "https://storage.googleapis.com/mediapipe-models/holistic_landmarker/holistic_landmarker/float16/latest/holistic_landmarker.task",
 }
 
 
@@ -54,11 +55,20 @@ def normalize(frame: np.ndarray) -> np.ndarray:
 
 
 class LandmarkExtractor:
-    def __init__(self, tracking: bool = False):
+    def __init__(self, tracking: bool = False, backend: str = "holistic"):
+        """backend: "holistic" (MediaPipe Holistic, the model the INCLUDE dataset was made with; default)
+        or "hands" (HandLandmarker + PoseLandmarker, lighter)."""
         import mediapipe as mp
         from mediapipe.tasks.python import BaseOptions, vision
 
         self._mp = mp
+        self.backend = backend
+        if backend == "holistic":
+            self.holistic = vision.HolisticLandmarker.create_from_options(vision.HolisticLandmarkerOptions(
+                base_options=BaseOptions(model_asset_path=_model("holistic_landmarker.task")),
+                running_mode=vision.RunningMode.VIDEO))
+            self._ts = 0
+            return
         # Per-frame detection (IMAGE mode) found hands more reliably than VIDEO-mode tracking on
         # INCLUDE test videos (7/9 vs 6/9 signs correct), so it is the default.
         mode = vision.RunningMode.VIDEO if tracking else vision.RunningMode.IMAGE
@@ -77,6 +87,10 @@ class LandmarkExtractor:
         rgb = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
         img = self._mp.Image(image_format=self._mp.ImageFormat.SRGB, data=rgb)
         self._ts += 33  # VIDEO mode needs increasing timestamps (ms)
+        if self.backend == "holistic":
+            r = self.holistic.detect_for_video(img, self._ts)
+            return np.concatenate([_points(r.left_hand_landmarks, 21), _points(r.right_hand_landmarks, 21),
+                                   _points(r.pose_landmarks, 33)]).reshape(-1)
         if self._image_mode:
             h, p = self.hands.detect(img), self.pose.detect(img)
         else:

@@ -1,7 +1,7 @@
 """Pretrained Indian Sign Language recognizer: 263 signs from the INCLUDE dataset, numpy-only.
 
 Trained by training/sign/train_include.py on INCLUDE pose keypoints (AI4Bharat, CC BY 4.0) and
-shipped as models/isl_include.npz (a small temporal CNN). No torch needed at runtime.
+shipped as models/isl_include.npz (an ensemble of small temporal CNNs). No torch needed at runtime.
 
 Features (shared by training and inference, so webcam input matches the training data):
 27 keypoints (nose, eyes, shoulders, elbows, 10 per hand), x/y in 0..1 image coords,
@@ -82,22 +82,32 @@ def _conv1d(x, w, b):
 class ISLModel:
     def __init__(self, weights: Path = DEFAULT_WEIGHTS):
         w = np.load(weights)
-        self.w = {k: w[k] for k in w.files}
+        n = int(w["n_members"]) if "n_members" in w.files else 0
+        prefixes = [f"m{i}__" for i in range(n)] or [""]  # ensemble members, or a single network
+        self.members = [{k[len(p):]: w[k] for k in w.files if k.startswith(p) and "__" in k[len(p):]}
+                        for p in prefixes]
         self.labels = [str(g) for g in w["labels"]]
         self.test_top1 = float(w["test_top1"]) if "test_top1" in w.files else None
 
-    def logits_kps75(self, kps75: np.ndarray) -> np.ndarray:
-        w = self.w
-        x = features(kps75).T  # (N_IN, T)
+    @staticmethod
+    def _logits(w, x):
         for c in ("c1", "c2", "c3"):
             x = np.maximum(_conv1d(x, w[f"{c}__weight"], w[f"{c}__bias"]), 0)
         pooled = np.concatenate([x.mean(-1), x.max(-1)])
         return pooled @ w["fc__weight"].T + w["fc__bias"]
 
+    def probs_kps75(self, kps75: np.ndarray) -> np.ndarray:
+        """Class probabilities, averaged over the ensemble."""
+        x = features(kps75).T  # (N_IN, T)
+        ps = []
+        for w in self.members:
+            z = self._logits(w, x)
+            p = np.exp(z - z.max())
+            ps.append(p / p.sum())
+        return np.mean(ps, axis=0)
+
     def predict_kps75(self, kps75: np.ndarray, top: int = 3) -> list[tuple[str, float]]:
-        z = self.logits_kps75(kps75)
-        p = np.exp(z - z.max())
-        p /= p.sum()
+        p = self.probs_kps75(kps75)
         idx = np.argsort(-p)[:top]
         return [(self.labels[i], float(p[i])) for i in idx]
 

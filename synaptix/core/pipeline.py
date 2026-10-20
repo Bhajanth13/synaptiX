@@ -30,7 +30,15 @@ class Pipeline:
     def ask_signs(self, glosses: list[str], lang: str = "en") -> Answer:
         """Entry point for the sign-language input: glosses -> sentence -> normal pipeline."""
         from synaptix.inputs.sign.isl_model import gloss_to_word
-        sentence = self.slm.glosses_to_sentence([gloss_to_word(g).upper() for g in glosses])
+        words = [gloss_to_word(g) for g in glosses]
+        if len(words) <= 2:
+            # One or two signs are a topic, not a question: ask who handles it if it is a civic
+            # topic we know, otherwise ask what it means. No model involved, so nothing gets garbled.
+            topic = " ".join(words)
+            hits = self.kb.search(topic, self.kb.jurisdiction["topics"], ["topic", "keywords"], k=1)
+            sentence = f"who handles {topic}" if hits else f"what is {topic}"
+        else:
+            sentence = self.slm.glosses_to_sentence([w.upper() for w in words])
         ans = self.ask(sentence, lang="en")
         if lang != "en":
             ans.text, ok = self.tr.from_english(ans.text, lang)

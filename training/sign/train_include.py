@@ -62,8 +62,26 @@ def load_split(poses: Path, csv_path: Path, labels: list[str]):
     return X, np.array(y)
 
 
+_POSE_PAIRS = [(1, 4), (2, 5), (3, 6), (7, 8), (9, 10), (11, 12), (13, 14), (15, 16), (17, 18), (19, 20),
+               (21, 22), (23, 24), (25, 26), (27, 28), (29, 30), (31, 32)]
+_MIRROR = list(range(75))
+for a, b in _POSE_PAIRS:
+    _MIRROR[a], _MIRROR[b] = b, a
+_MIRROR[33:54], _MIRROR[54:75] = list(range(54, 75)), list(range(33, 54))
+
+
+def mirror(k):
+    """Left-handed version of a clip: flip x and swap left/right body parts."""
+    k = k[:, _MIRROR].copy()
+    mask = k.any(-1)
+    k[..., 0] = np.where(mask, 1 - k[..., 0], 0)
+    return k
+
+
 def augment(k, rng):
     """Random rotation, scale, shear, shift, speed and dropped hands: robustness to webcam differences."""
+    if rng.random() < 0.3:
+        k = mirror(k)
     a = rng.normal(0, 0.1)
     M = np.array([[np.cos(a), -np.sin(a)], [np.sin(a), np.cos(a)]]) @ np.array([[1, rng.normal(0, 0.1)], [0, 1]])
     M *= rng.uniform(0.85, 1.15)
@@ -95,26 +113,14 @@ class Net(nn.Module):
         return self.fc(self.drop(x))
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--poses", type=Path, required=True)
-    ap.add_argument("--splits", type=Path, required=True)
-    ap.add_argument("--epochs", type=int, default=120)
-    args = ap.parse_args()
-    torch.manual_seed(0)
-    rng = np.random.default_rng(0)
-
-    labels = sorted({clean_label(r["Word"]) for r in csv.DictReader(open(args.splits / "train_include.csv"))})
-    Xtr, ytr = load_split(args.poses, args.splits / "train_include.csv", labels)
-    Xte, yte = load_split(args.poses, args.splits / "test_include.csv", labels)
-    print(f"{len(labels)} signs, {len(Xtr)} train clips, {len(Xte)} test clips")
-    te = torch.tensor(np.stack([features(k) for k in Xte]), dtype=torch.float32)
-
-    net = Net(len(labels))
+def train_one(seed, epochs, Xtr, ytr, te, yte, n_cls):
+    """Train one network; returns (state dict as numpy, test probabilities from its final epoch)."""
+    torch.manual_seed(seed)
+    rng = np.random.default_rng(seed)
+    net = Net(n_cls)
     opt = torch.optim.AdamW(net.parameters(), lr=2e-3, weight_decay=1e-3)
-    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=2e-3, total_steps=args.epochs * (len(Xtr) // 64 + 1))
-    best = 0.0
-    for ep in range(args.epochs):
+    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=2e-3, total_steps=epochs * (len(Xtr) // 64 + 1))
+    for ep in range(epochs):
         net.train()
         order = rng.permutation(len(Xtr))
         for b in range(0, len(order), 64):
@@ -125,19 +131,45 @@ def main():
             loss.backward()
             opt.step()
             sched.step()
-        if ep % 5 == 4 or ep == args.epochs - 1:
+        if ep % 10 == 9 or ep == epochs - 1:
             net.eval()
             with torch.no_grad():
                 logits = net(te)
-            top1 = (logits.argmax(1).numpy() == yte).mean()
-            top3 = np.mean([y in row for y, row in zip(yte, logits.topk(3, 1).indices.numpy())])
-            print(f"epoch {ep + 1}: loss {loss.item():.3f}  test top-1 {top1:.1%}  top-3 {top3:.1%}", flush=True)
-            if top1 >= best:
-                best = top1
-                sd = {k.replace(".", "__"): v.detach().numpy() for k, v in net.state_dict().items()}
-                OUT.parent.mkdir(exist_ok=True)
-                np.savez_compressed(OUT, labels=np.array(labels), test_top1=top1, test_top3=top3, **sd)
-    print(f"best test top-1 {best:.1%} -> {OUT}")
+            print(f"seed {seed} epoch {ep + 1}: loss {loss.item():.3f}  test top-1 "
+                  f"{(logits.argmax(1).numpy() == yte).mean():.1%}", flush=True)
+    # The final epoch is kept (no picking the best epoch on the test set, so the reported score is honest).
+    return ({k.replace(".", "__"): v.detach().numpy() for k, v in net.state_dict().items()},
+            torch.softmax(logits, 1).numpy())
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--poses", type=Path, required=True)
+    ap.add_argument("--splits", type=Path, required=True)
+    ap.add_argument("--epochs", type=int, default=150)
+    ap.add_argument("--seeds", type=int, default=3, help="ensemble size; predictions are averaged")
+    args = ap.parse_args()
+
+    labels = sorted({clean_label(r["Word"]) for r in csv.DictReader(open(args.splits / "train_include.csv"))})
+    Xtr, ytr = load_split(args.poses, args.splits / "train_include.csv", labels)
+    Xte, yte = load_split(args.poses, args.splits / "test_include.csv", labels)
+    print(f"{len(labels)} signs, {len(Xtr)} train clips, {len(Xte)} test clips")
+    te = torch.tensor(np.stack([features(k) for k in Xte]), dtype=torch.float32)
+
+    members, probs = {}, []
+    for seed in range(args.seeds):
+        sd, p = train_one(seed, args.epochs, Xtr, ytr, te, yte, len(labels))
+        members.update({f"m{seed}__{k}": v for k, v in sd.items()})
+        probs.append(p)
+        ens = np.mean(probs, axis=0)
+        top1 = (ens.argmax(1) == yte).mean()
+        top3 = np.mean([y in row for y, row in zip(yte, np.argsort(-ens, 1)[:, :3])])
+        print(f"ensemble of {seed + 1}: test top-1 {top1:.1%}  top-3 {top3:.1%}", flush=True)
+    OUT.parent.mkdir(exist_ok=True)
+    np.savez_compressed(OUT, labels=np.array(labels), test_top1=top1, test_top3=top3,
+                        n_members=args.seeds, **members)
+    best = top1
+    print(f"ensemble test top-1 {best:.1%} -> {OUT}")
 
 
 if __name__ == "__main__":

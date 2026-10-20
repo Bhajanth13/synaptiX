@@ -44,9 +44,11 @@ Trained with `training/sign/train_include.py` on INCLUDE pose keypoints (3,465 t
 | Test | Result |
 |---|---|
 | INCLUDE test split, dataset keypoints (816 clips) | 96.6% top-1, 99.5% top-3 |
-| Raw INCLUDE test videos through the live MediaPipe pipeline (9 civic signs: bank, court, doctor, election, hospital, lawyer, money, police, school) | 7/9 top-1 as whole clips |
+| 28 raw INCLUDE test videos through the live pipeline, `holistic` extractor (default) | **27/28 top-1 (96%), 28/28 top-3** |
+| Same 28 videos, `hands` extractor (HandLandmarker + PoseLandmarker) | 23/28 top-1 (82%) |
 
-The gap between the two comes from hand detection: the live extractor (MediaPipe Tasks) misses hands
-in more frames than the Holistic model used to make the dataset. The test split was also used to pick
-the best epoch, so 96.6% is slightly optimistic. Note: the released INCLUDE `.pkl` files store x scaled
-by frame height and y by frame width; the training loader corrects for this.
+Reproduce: `training/sign/fetch_include_videos.py` then `training/sign/eval_videos.py`.
+The Holistic extractor matters because the dataset was made with MediaPipe Holistic. The public
+OpenHands INCLUDE checkpoints were also tried and score ~2% on the released pose files even with an
+exact port, so SynaptiX trains its own. Note: the released INCLUDE `.pkl` files store x scaled by frame
+height and y by frame width; the training loader corrects for this.
