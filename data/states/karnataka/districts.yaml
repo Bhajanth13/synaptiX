@@ -1,0 +1,252 @@
+# Karnataka districts and the district-level offices a citizen can approach.
+# Office templates (office_types) are shared; a district may override one under `offices`.
+# No phone numbers or addresses are stored (website "" + verify true = not checked yet).
+# Names in Kannada and all entries are review: pending.
+state: karnataka
+source: Government of Karnataka district list (31 districts); legal basis cited per office type
+review: pending
+office_types:
+  dlsa:
+    name: District Legal Services Authority
+    name_kn: ಜಿಲ್ಲಾ ಕಾನೂನು ಸೇವೆಗಳ ಪ್ರಾಧಿಕಾರ
+    helps_with: free lawyer and legal advice
+    helpline: "15100"
+    source: Legal Services Authorities Act, 1987, Section 9
+  labour:
+    name: District labour office (Karnataka Labour Department)
+    helps_with: unpaid or low wages, working conditions
+    source: Karnataka Labour Department
+  dc:
+    name: Deputy Commissioner's office
+    helps_with: revenue, land records, certificates, district administration
+    source: Karnataka Land Revenue Act, 1964
+  police:
+    name: District Police (Superintendent of Police)
+    helps_with: police complaints when the station does not act
+    helpline: "112"
+    note: Some cities have a Police Commissionerate instead
+    source: Karnataka Police Act, 1963
+  zp:
+    name: Zilla Panchayat (Chief Executive Officer)
+    helps_with: rural development and panchayat works
+    source: Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+districts:
+  - id: bagalkote
+    name: Bagalkote
+    name_kn: ಬಾಗಲಕೋಟೆ
+    aliases: [bagalkot]
+    website: ""
+    verify: true
+    offices: {}
+  - id: ballari
+    name: Ballari
+    name_kn: ಬಳ್ಳಾರಿ
+    aliases: [bellary]
+    website: ""
+    verify: true
+    offices: {}
+  - id: belagavi
+    name: Belagavi
+    name_kn: ಬೆಳಗಾವಿ
+    aliases: [belgaum]
+    website: ""
+    verify: true
+    offices: {}
+  - id: bengaluru_rural
+    name: Bengaluru Rural
+    name_kn: ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ
+    aliases: [bangalore rural]
+    website: ""
+    verify: true
+    offices: {}
+  - id: bengaluru_urban
+    name: Bengaluru Urban
+    name_kn: ಬೆಂಗಳೂರು ನಗರ
+    aliases: [bangalore, bangalore urban]
+    website: ""
+    verify: true
+    offices:
+      police: {name: Bengaluru City Police (Commissioner of Police), verify: true}
+  - id: bidar
+    name: Bidar
+    name_kn: ಬೀದರ್
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: chamarajanagara
+    name: Chamarajanagara
+    name_kn: ಚಾಮರಾಜನಗರ
+    aliases: [chamarajanagar]
+    website: ""
+    verify: true
+    offices: {}
+  - id: chikkaballapura
+    name: Chikkaballapura
+    name_kn: ಚಿಕ್ಕಬಳ್ಳಾಪುರ
+    aliases: [chikballapur]
+    website: ""
+    verify: true
+    offices: {}
+  - id: chikkamagaluru
+    name: Chikkamagaluru
+    name_kn: ಚಿಕ್ಕಮಗಳೂರು
+    aliases: [chikmagalur]
+    website: ""
+    verify: true
+    offices: {}
+  - id: chitradurga
+    name: Chitradurga
+    name_kn: ಚಿತ್ರದುರ್ಗ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: dakshina_kannada
+    name: Dakshina Kannada
+    name_kn: ದಕ್ಷಿಣ ಕನ್ನಡ
+    aliases: [mangalore]
+    website: ""
+    verify: true
+    offices: {}
+  - id: davanagere
+    name: Davanagere
+    name_kn: ದಾವಣಗೆರೆ
+    aliases: [davangere]
+    website: ""
+    verify: true
+    offices: {}
+  - id: dharwad
+    name: Dharwad
+    name_kn: ಧಾರವಾಡ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: gadag
+    name: Gadag
+    name_kn: ಗದಗ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: hassan
+    name: Hassan
+    name_kn: ಹಾಸನ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: haveri
+    name: Haveri
+    name_kn: ಹಾವೇರಿ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: kalaburagi
+    name: Kalaburagi
+    name_kn: ಕಲಬುರಗಿ
+    aliases: [gulbarga]
+    website: ""
+    verify: true
+    offices: {}
+  - id: kodagu
+    name: Kodagu
+    name_kn: ಕೊಡಗು
+    aliases: [coorg]
+    website: ""
+    verify: true
+    offices: {}
+  - id: kolar
+    name: Kolar
+    name_kn: ಕೋಲಾರ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: koppal
+    name: Koppal
+    name_kn: ಕೊಪ್ಪಳ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: mandya
+    name: Mandya
+    name_kn: ಮಂಡ್ಯ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: mysuru
+    name: Mysuru
+    name_kn: ಮೈಸೂರು
+    aliases: [mysore]
+    website: ""
+    verify: true
+    offices: {}
+  - id: raichur
+    name: Raichur
+    name_kn: ರಾಯಚೂರು
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: ramanagara
+    name: Ramanagara
+    name_kn: ರಾಮನಗರ
+    aliases: [bengaluru south]
+    website: ""
+    verify: true
+    note: Renamed Bengaluru South (2025); verify
+    offices: {}
+  - id: shivamogga
+    name: Shivamogga
+    name_kn: ಶಿವಮೊಗ್ಗ
+    aliases: [shimoga]
+    website: ""
+    verify: true
+    offices: {}
+  - id: tumakuru
+    name: Tumakuru
+    name_kn: ತುಮಕೂರು
+    aliases: [tumkur]
+    website: ""
+    verify: true
+    offices: {}
+  - id: udupi
+    name: Udupi
+    name_kn: ಉಡುಪಿ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: uttara_kannada
+    name: Uttara Kannada
+    name_kn: ಉತ್ತರ ಕನ್ನಡ
+    aliases: [karwar]
+    website: ""
+    verify: true
+    offices: {}
+  - id: vijayanagara
+    name: Vijayanagara
+    name_kn: ವಿಜಯನಗರ
+    aliases: []
+    website: ""
+    verify: true
+    offices: {}
+  - id: vijayapura
+    name: Vijayapura
+    name_kn: ವಿಜಯಪುರ
+    aliases: [bijapur]
+    website: ""
+    verify: true
+    offices: {}
+  - id: yadgir
+    name: Yadgir
+    name_kn: ಯಾದಗಿರಿ
+    aliases: [yadgiri]
+    website: ""
+    verify: true
+    offices: {}

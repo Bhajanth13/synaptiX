@@ -11,6 +11,7 @@
     - Complain to the Labour Inspector-cum-Facilitator at the district labour office.
     - Free help is available from the District Legal Services Authority.
   escalate_to: District labour office / DLSA
+  escalate_offices: [labour, dlsa]
   source: Code on Wages, 2019
   review: pending
 
@@ -23,6 +24,7 @@
     - Go to the District Legal Services Authority (DLSA) at the district court, or the Taluk Legal Services Committee.
     - Call the national legal aid helpline 15100.
   escalate_to: DLSA
+  escalate_offices: [dlsa]
   source: Legal Services Authorities Act, 1987, Section 12
   review: pending
 
@@ -34,6 +36,7 @@
     - Note the court, case number and date on the paper.
     - Contact the DLSA for a free lawyer before the date.
   escalate_to: DLSA
+  escalate_offices: [dlsa]
   source: Bharatiya Nagarik Suraksha Sanhita, 2023
   review: pending
 
@@ -57,6 +60,7 @@
     - File objections in writing before that date.
     - Get free legal help from the DLSA.
   escalate_to: DLSA
+  escalate_offices: [dlsa, dc]
   source: Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013
   review: pending
 
@@ -68,5 +72,6 @@
     - Call 181 (women's helpline) or 112 in an emergency.
     - Contact the Protection Officer or the DLSA.
   escalate_to: Protection Officer / 181
+  escalate_offices: [dlsa, police]
   source: Protection of Women from Domestic Violence Act, 2005
   review: pending

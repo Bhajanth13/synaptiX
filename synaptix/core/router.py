@@ -7,12 +7,16 @@ import re
 RULES = [
     ("jurisdiction", ["who do i", "whom", "responsible", "complain to", "sarpanch", "mla", "mp ",
                       "panchayat", "power", "whose job", "who handles", "who fixes", "who is in charge",
-                      "किससे", "कौन ठीक", "किसकी ज़िम्मेदारी", "ಯಾರಿಗೆ", "ಯಾರ ಜವಾಬ್ದಾರಿ"]),
-    ("events", ["when is", "upcoming", "next gram sabha", "camp", "deadline", "election date", "meeting"]),
+                      "किससे", "कौन ठीक", "किसकी ज़िम्मेदारी", "ಯಾರಿಗೆ", "ಯಾರ ಜವಾಬ್ದಾರಿ",
+                      "ಯಾರು", "ಪಂಚಾಯಿತಿ", "ಶಾಸಕ", "ಸಂಸದ", "ದೂರು"]),
+    ("events", ["when is", "upcoming", "next gram sabha", "camp", "deadline", "election date", "meeting", "ಯಾವಾಗ"]),
     ("legal", ["law", "legal", "rights", "notice", "contract", "wage", "land", "loan", "summons",
-               "fir", "act", "court", "eligible", "scheme", "कानून", "मज़दूरी", "मजदूरी", "ಕಾನೂನು", "ವೇತನ"]),
+               "fir", "act", "court", "eligible", "scheme", " rent", "tenant", "rtc", "pahani", "khata",
+               "mutation", "registration", "stamp", "seva sindhu", "shop",
+               "कानून", "मज़दूरी", "मजदूरी", "ಕಾನೂನು", "ವೇತನ", "ಹಕ್ಕು", "ಪಹಣಿ", "ಖಾತೆ", "ಬಾಡಿಗೆ",
+               "ನೋಂದಣಿ", "ಕೂಲಿ", "ಸಾಲ", "ನ್ಯಾಯಾಲಯ", "ವಕೀಲ"]),
     ("jargon", ["what is", "what does", "meaning", "mean", "explain", "define",
-                "मतलब", "क्या है", "क्या होता", "ಅರ್ಥ", "ಎಂದರೇನು"]),
+                "मतलब", "क्या है", "क्या होता", "ಅರ್ಥ", "ಎಂದರೇನು", "ಏನು", "ಎಂದರೆ"]),
 ]
 
 

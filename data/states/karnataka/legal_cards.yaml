@@ -1,0 +1,116 @@
+# Karnataka legal information cards. Same schema as data/legal_cards.yaml, plus optional
+# *_kn fields, escalate_offices (keys of office_types in districts.yaml) and source_url.
+# Only statements the author is certain of; no amounts, fees, phone numbers or addresses.
+# Every card is review: pending until a law student / native speaker checks it.
+
+- id: ka-rtc-pahani
+  title: RTC (Pahani), the Karnataka land record
+  keywords: rtc pahani record rights tenancy crops land bhoomi revenue ಪಹಣಿ ಆರ್‌ಟಿಸಿ ಆರ್ಟಿಸಿ ಭೂಮಿ
+  summary: The RTC (Record of Rights, Tenancy and Crops), also called Pahani, is the Karnataka land record. It shows who holds a piece of land and what crop is grown on it. It is kept by the Revenue Department, and the Bhoomi portal gives access to it.
+  summary_kn: ಆರ್‌ಟಿಸಿ (ಪಹಣಿ) ಕರ್ನಾಟಕದ ಭೂ ದಾಖಲೆ. ಒಂದು ಜಮೀನು ಯಾರ ಹೆಸರಿನಲ್ಲಿದೆ ಮತ್ತು ಅದರಲ್ಲಿ ಯಾವ ಬೆಳೆ ಬೆಳೆಯಲಾಗಿದೆ ಎಂಬುದನ್ನು ಇದು ತೋರಿಸುತ್ತದೆ. ಇದನ್ನು ಕಂದಾಯ ಇಲಾಖೆ ನಿರ್ವಹಿಸುತ್ತದೆ.
+  what_to_do:
+    - Look up your land on the Bhoomi portal, or ask at the taluk revenue office.
+    - If the record is wrong, tell the revenue office in writing and keep a copy.
+  escalate_offices: [dc]
+  source: Karnataka Land Revenue Act, 1964
+  source_url: https://landrecords.karnataka.gov.in
+  review: pending
+
+- id: ka-mutation
+  title: Mutation of land records in Karnataka
+  keywords: mutation transfer ownership inheritance sale land record revenue tahsildar
+  summary: When ownership of land changes, for example by sale or inheritance, the change has to be entered in the land records. This entry is called mutation, and the revenue department handles it.
+  what_to_do:
+    - Ask at the taluk revenue office what papers are needed.
+    - Keep a copy of everything you submit.
+  escalate_offices: [dc]
+  source: Karnataka Land Revenue Act, 1964
+  review: pending
+
+- id: ka-gram-panchayat
+  title: Grama Panchayat and Grama Sabha in Karnataka
+  keywords: grama gram panchayat sabha taluk zilla village local ಗ್ರಾಮ ಸಭೆ ಪಂಚಾಯಿತಿ
+  summary: "Rural local government in Karnataka has three tiers: the Grama Panchayat for the village, the Taluk Panchayat, and the Zilla Panchayat for the district. Every adult voter of the village can attend and speak at the Grama Sabha."
+  summary_kn: "ಗ್ರಾಮೀಣ ಕರ್ನಾಟಕದಲ್ಲಿ ಸ್ಥಳೀಯ ಸರ್ಕಾರಕ್ಕೆ ಮೂರು ಹಂತಗಳಿವೆ: ಗ್ರಾಮ ಪಂಚಾಯಿತಿ, ತಾಲ್ಲೂಕು ಪಂಚಾಯಿತಿ ಮತ್ತು ಜಿಲ್ಲಾ ಪಂಚಾಯಿತಿ. ಗ್ರಾಮದ ಪ್ರತಿಯೊಬ್ಬ ವಯಸ್ಕ ಮತದಾರರೂ ಗ್ರಾಮ ಸಭೆಗೆ ಹೋಗಿ ಮಾತನಾಡಬಹುದು."
+  what_to_do:
+    - Ask at the Grama Panchayat office when the next Grama Sabha is held.
+    - Go to the Grama Sabha and raise the needs of your village.
+  escalate_offices: [zp]
+  source: Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+  review: pending
+
+- id: ka-land-reforms-tenancy
+  title: Land reforms and tenancy in Karnataka
+  keywords: land reforms tenancy tenant ceiling agricultural holding
+  summary: The Karnataka Land Reforms Act, 1961 is the state law on agricultural tenancy and on limits to how much agricultural land one person or family can hold.
+  what_to_do:
+    - Free legal help is available from the District Legal Services Authority.
+  escalate_offices: [dlsa, dc]
+  source: Karnataka Land Reforms Act, 1961
+  review: pending
+
+- id: ka-shops-establishments
+  title: Shops and commercial establishments in Karnataka
+  keywords: shop shops establishment commercial working hours holiday registration worker
+  summary: The Karnataka Shops and Commercial Establishments Act, 1961 applies to shops and commercial establishments in Karnataka. It has rules on registration, working hours and weekly holidays.
+  what_to_do:
+    - Ask the district labour office which rules apply to your workplace.
+  escalate_offices: [labour, dlsa]
+  source: Karnataka Shops and Commercial Establishments Act, 1961
+  review: pending
+
+- id: ka-minimum-wages
+  title: Minimum wages in Karnataka
+  keywords: minimum wage wages kannada karnataka unpaid labour ಕೂಲಿ ವೇತನ
+  summary: In Karnataka the state government notifies minimum wages separately for each kind of employment, so the rate depends on the work you do. The district labour office can tell you the current rate for your work.
+  what_to_do:
+    - Keep a record of days worked and money received.
+    - Ask the district labour office for the current minimum wage for your work.
+    - Free help is available from the District Legal Services Authority.
+  escalate_offices: [labour, dlsa]
+  source: Code on Wages, 2019; Karnataka Labour Department
+  review: pending
+
+- id: ka-property-registration
+  title: Registering property in Karnataka
+  keywords: property registration register sale deed stamp duty sub-registrar kaveri ನೋಂದಣಿ
+  summary: A sale deed for immovable property such as land or a house must be registered at the Sub-Registrar's office. Stamp duty on documents is charged under the Karnataka Stamp Act, 1957.
+  what_to_do:
+    - Ask at the Sub-Registrar's office which documents are needed.
+    - Keep the registered copy of the deed safe.
+  escalate_offices: [dlsa]
+  source: Registration Act, 1908; Karnataka Stamp Act, 1957
+  review: pending
+
+- id: ka-seva-sindhu
+  title: Seva Sindhu, Karnataka government services portal
+  keywords: seva sindhu services portal certificate apply online application status
+  summary: Seva Sindhu is the Karnataka government's single portal where citizens can apply for services of many departments and track their applications.
+  what_to_do:
+    - Keep your application number to track the application on the portal.
+  escalate_offices: [dc]
+  source: Department of e-Governance, Government of Karnataka (Seva Sindhu portal)
+  source_url: https://sevasindhu.karnataka.gov.in
+  review: pending
+
+- id: ka-sakala
+  title: Time limits for government services in Karnataka
+  keywords: sakala time limit services delay government office deadline
+  summary: The Karnataka Sakala Services Act, 2011 sets time limits for delivering notified government services to citizens. The time limit is different for each service.
+  what_to_do:
+    - Note the date you applied and your application number.
+  escalate_offices: [dc]
+  source: Karnataka Sakala Services Act, 2011
+  review: pending
+
+- id: ka-legal-aid
+  title: Free legal aid in Karnataka
+  keywords: lawyer advocate free legal aid kslsa dlsa taluk legal services committee ವಕೀಲ ಉಚಿತ
+  summary: Karnataka has a State Legal Services Authority (KSLSA), a District Legal Services Authority in every district and Taluk Legal Services Committees. They give free legal services to eligible people. The national legal aid helpline is 15100.
+  summary_kn: ಕರ್ನಾಟಕದಲ್ಲಿ ರಾಜ್ಯ ಕಾನೂನು ಸೇವೆಗಳ ಪ್ರಾಧಿಕಾರ ಮತ್ತು ಪ್ರತಿ ಜಿಲ್ಲೆಯಲ್ಲಿ ಜಿಲ್ಲಾ ಕಾನೂನು ಸೇವೆಗಳ ಪ್ರಾಧಿಕಾರ ಇದೆ. ಅರ್ಹರಿಗೆ ಉಚಿತ ವಕೀಲರು ಮತ್ತು ಕಾನೂನು ಸಲಹೆ ಸಿಗುತ್ತದೆ.
+  what_to_do:
+    - Go to the District Legal Services Authority or the Taluk Legal Services Committee.
+    - Call the national legal aid helpline 15100.
+  escalate_offices: [dlsa]
+  source: Legal Services Authorities Act, 1987, Sections 6, 9 and 11A
+  review: pending

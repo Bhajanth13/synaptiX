@@ -1,0 +1,9 @@
+# Which district offices to name under each national jurisdiction topic (keys of office_types).
+# Topic names must equal the topic names in data/jurisdiction.yaml.
+source: Karnataka Land Revenue Act, 1964; Karnataka Police Act, 1963; Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+review: pending
+topic_offices:
+  "police and law and order": [police]
+  "land records": [dc]
+  "village roads and drains": [zp]
+  "drinking water": [zp]

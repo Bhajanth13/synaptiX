@@ -1,0 +1,214 @@
+model: slm.gguf
+prompt_version: 2
+entries:
+- key: 22a215c64445f5e4
+  ref: glossary:Affidavit
+  term: Affidavit
+  text: An affidavit is a written statement you swear is true. Lying in an affidavit is a crime.
+  source: General legal usage
+  review: pending
+- key: c8f210fcdf526c1c
+  ref: glossary:Bill
+  term: Bill
+  text: A bill is a proposed law. It becomes a law after the house votes for it and the President or Governor
+    signs it.
+  source: Constitution of India, Art. 107-111, 196-201
+  review: pending
+- key: 40222a4543707597
+  ref: glossary:FIR
+  term: FIR
+  text: FIR is a report of a serious crime. It is made at a police station. Police must register it and
+    give you a free copy. You can file it at any police station; it is then sent to the right one (Zero
+    FIR).
+  source: Bharatiya Nagarik Suraksha Sanhita, 2023, Section 173
+  review: pending
+- key: efbe093a43e37365
+  ref: glossary:Gram Sabha
+  term: Gram Sabha
+  text: A Gram Sabha is a village meeting. Every adult voter votes on panchayat work and scheme benefits.
+    You have the right to attend and speak.
+  source: Constitution of India, Art. 243(b), 243A
+  review: pending
+- key: 8cc218a205c5e009
+  ref: glossary:Grama Panchayat
+  term: Grama Panchayat
+  text: Grama Panchayat is the village-level local government in rural Karnataka.
+  source: Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+  review: pending
+- key: f06361296f40f2ef
+  ref: glossary:Lok Adalat
+  term: Lok Adalat
+  text: A Lok Adalat is a people's court. Disputes are settled by agreement there. There is no court fee,
+    and the decision is final, like a court order.
+  source: Legal Services Authorities Act, 1987, Sections 19-21
+  review: pending
+- key: 869c9d3ca380214e
+  ref: glossary:MLA
+  term: MLA
+  text: An MLA is your elected member of the state assembly. They make state laws, question the state
+    government, and recommend local development works from the MLA area fund. An MLA does not run government
+    offices directly.
+  source: Constitution of India, Art. 168-212; state MLALAD scheme guidelines
+  review: pending
+- key: 1d37a6ea33ecd882
+  ref: glossary:MP
+  term: MP
+  text: Your MP is an elected member of Parliament (Lok Sabha). They make national laws, question the
+    Union government, and can recommend local works from the MPLADS fund.
+  source: Constitution of India, Art. 79-122
+  review: pending
+- key: 1275875c2dc01c18
+  ref: glossary:MPLADS
+  term: MPLADS
+  text: MPLADS is money each MP can recommend for local works. It's up to Rs 5 crore a year. The district
+    administration spends it and carries out the work, not the MP.
+  source: MPLADS Guidelines, Ministry of Statistics and Programme Implementation
+  review: pending
+- key: 0a27d38c8af08600
+  ref: glossary:Model Code of Conduct
+  term: Model Code of Conduct
+  text: Model Code of Conduct is election rules from the Election Commission. During elections, the government
+    cannot announce new schemes or projects to win votes.
+  source: Election Commission of India
+  review: pending
+- key: 579041c10b2100af
+  ref: glossary:No-confidence motion
+  term: No-confidence motion
+  text: A no-confidence motion is a vote. If the government loses it, it must resign. In the Lok Sabha,
+    it needs support from at least 50 members to be taken up.
+  source: Lok Sabha Rules of Procedure, Rule 198
+  review: pending
+- key: 8e8a755c56cad9c0
+  ref: glossary:Ordinance
+  term: Ordinance
+  text: An ordinance is a temporary law made by the President or Governor. It lapses unless the house
+    approves it within six weeks of meeting again.
+  source: Constitution of India, Art. 123 and 213
+  review: pending
+- key: 3ef9d812cee94c91
+  ref: glossary:Question Hour
+  term: Question Hour
+  text: Question hour is the first hour of a sitting. Members ask ministers questions, and ministers must
+    answer.
+  source: Rules of Procedure and Conduct of Business in Lok Sabha
+  review: pending
+- key: d2799f431feb2bdb
+  ref: glossary:RTC (Pahani)
+  term: RTC (Pahani)
+  text: RTC (Pahani) is a land record in Karnataka. It shows who owns the land and what crops are grown
+    there.
+  source: Karnataka Land Revenue Act, 1964
+  review: pending
+- key: 68c452a440b1bf1b
+  ref: glossary:RTI
+  term: RTI
+  text: RTI is a law. Any citizen can ask a government office for information in writing. The office must
+    reply within 30 days. People below the poverty line pay no fee.
+  source: Right to Information Act, 2005, Sections 6-7
+  review: pending
+- key: da2678adc647f2ba
+  ref: glossary:Sarpanch
+  term: Sarpanch
+  text: The Sarpanch is the elected head of the Gram Panchayat. They run village-level works like roads,
+    drains, streetlights, and water. They use panchayat funds and state grants.
+  source: State Panchayati Raj Acts; Constitution of India, Part IX
+  review: pending
+- key: 04e391979241550f
+  ref: glossary:Zero Hour
+  term: Zero Hour
+  text: Zero Hour is time right after Question Hour when members raise urgent public issues without notice.
+    It is a practice, not a written rule.
+  source: Lok Sabha practice
+  review: pending
+- key: 1716efa998af9ae1
+  ref: glossary:Zila Parishad
+  term: Zila Parishad
+  text: The Zila Parishad is the panchayat bodies above the village. Panchayat Samiti works at block level,
+    Zila Parishad at district level. They plan and fund works bigger than one village.
+  source: Constitution of India, Art. 243B
+  review: pending
+- key: 84dc94d191813fb8
+  ref: legal:court-summons
+  term: null
+  text: A summons is an order from a court to come on a given date. Do not ignore it; if you do not go,
+    the court can issue a warrant. You can ask for a free lawyer.
+  source: Bharatiya Nagarik Suraksha Sanhita, 2023
+  review: pending
+- key: 7fec0321e8f0463a
+  ref: legal:domestic-violence
+  term: null
+  text: A woman facing violence at home can get a protection order. The Protection Officer helps file
+    the case for free.
+  source: Protection of Women from Domestic Violence Act, 2005
+  review: pending
+- key: 7a79ce59145b0240
+  ref: legal:free-legal-aid
+  term: null
+  text: The Legal Services Authority provides free lawyers and legal advice to women, children, SC/ST
+    members, workers, disaster victims, people in custody, and those with low income.
+  source: Legal Services Authorities Act, 1987, Section 12
+  review: pending
+- key: cad06acbd8875b63
+  ref: legal:ka-gram-panchayat
+  term: null
+  text: 'Rural local government in Karnataka has three tiers: Grama Panchayat, Taluk Panchayat, and Zilla
+    Panchayat. Every adult voter can attend Grama Sabha.'
+  source: Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+  review: pending
+- key: c5c17b78798eec15
+  ref: legal:ka-land-reforms-tenancy
+  term: null
+  text: The Karnataka Land Reforms Act, 1961 is a state law on agricultural tenancy and limits to how
+    much land one person or family can hold.
+  source: Karnataka Land Reforms Act, 1961
+  review: pending
+- key: 36e4f2c1b7a842bb
+  ref: legal:ka-legal-aid
+  term: null
+  text: Karnataka has a State Legal Services Authority (KSLSA), a District Legal Services Authority in
+    every district, and Taluk Legal Services Committees. They give free legal services to eligible people.
+    The national legal aid helpline is 15100.
+  source: Legal Services Authorities Act, 1987, Sections 6, 9 and 11A
+  review: pending
+- key: 648d05222d5431fa
+  ref: legal:ka-mutation
+  term: null
+  text: When ownership of land changes, like by sale or inheritance, the change has to be entered in the
+    land records. This entry is called a mutation, and the revenue department handles it.
+  source: Karnataka Land Revenue Act, 1964
+  review: pending
+- key: 9dc6f71e102a1dc5
+  ref: legal:ka-sakala
+  term: null
+  text: The Karnataka Sakala Services Act, 2011 sets time limits for delivering government services. The
+    time limit is different for each service.
+  source: Karnataka Sakala Services Act, 2011
+  review: pending
+- key: 0fa4aaed40624fc9
+  ref: legal:ka-seva-sindhu
+  term: null
+  text: Seva Sindhu is a single portal where citizens can apply for services from many departments. They
+    can track their applications there.
+  source: Department of e-Governance, Government of Karnataka (Seva Sindhu portal)
+  review: pending
+- key: 5c4a2dc2375c5bbe
+  ref: legal:ka-shops-establishments
+  term: null
+  text: The Karnataka Shops and Commercial Establishments Act, 1961 applies to shops and commercial establishments
+    in Karnataka. It has rules on registration, working hours, and weekly holidays.
+  source: Karnataka Shops and Commercial Establishments Act, 1961
+  review: pending
+- key: 153ff8103f2dbcc5
+  ref: legal:loan-agreement
+  term: null
+  text: Banks and regulated lenders must explain loan terms, interest rate, and charges to you in a language
+    you understand. They must give you a copy of the agreement.
+  source: RBI Fair Practices Code for lenders
+  review: pending
+- key: f07d16c572537acd
+  ref: legal:minimum-wage
+  term: null
+  text: Your employer must pay minimum wage. It must be fixed by your state. It must be paid on time,
+    same for men and women. Overtime must be paid at twice the normal rate.
+  source: Code on Wages, 2019
+  review: pending

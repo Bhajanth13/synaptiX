@@ -4,6 +4,7 @@ Deterministic lookup over data/jurisdiction.yaml (11th Schedule + 7th Schedule o
 Constitution). No model is involved, so it cannot hallucinate.
 """
 
+from synaptix.core.location import Location
 from synaptix.core.types import Answer
 from synaptix.skills.base import Skill
 
@@ -23,10 +24,18 @@ class JurisdictionSkill(Skill):
             lines.append(f"{i}. {data['levels'][step['level']]['label']}: {step['role']}")
         if t.get("not_them"):
             lines.append("Not their job: " + t["not_them"])
+        loc = q.location or Location()
+        if loc.district:
+            keys = self.kb.states[loc.state]["topic_offices"].get(t["topic"])
+            if keys:
+                lines.append(f"In {loc.label} district: " + self.kb.offices_text(loc.state, loc.district, keys))
         return Answer("\n".join(lines), lang="en", skill=self.name, sources=t["sources"],
                       note=None if q.lang == "en" else "(Shown in English: translation pending.)")
 
     def _overview(self, q):
         levels = self.kb.jurisdiction["levels"]
         text = "\n".join(f"- {v['label']}: {v['summary']}" for v in levels.values())
+        loc = q.location or Location()
+        if loc.district:
+            text += f"\nIn {loc.label} district: " + self.kb.offices_text(loc.state, loc.district, ["dc", "zp"])
         return Answer(text, lang="en", skill=self.name, sources=["Constitution of India, 7th & 11th Schedules"])

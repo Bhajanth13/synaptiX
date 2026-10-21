@@ -69,6 +69,8 @@ synaptix ask "what is zero hour"
 synaptix ask "who is responsible for the national highway"
 synaptix ask "ग्राम सभा क्या है"
 synaptix ask "my contractor did not pay minimum wage"
+synaptix ask "my employer pays less than minimum wage" --district Mysuru   # Karnataka district offices
+synaptix location Mysuru            # remember your district
 synaptix signs NOTICE SUMMONS COURT MEANING
 synaptix ask "ग्राम सभा क्या है" --speak          # writes a WAV with the offline rule TTS
 synaptix say "ಗ್ರಾಮ ಸಭೆ" --phonemes
@@ -89,6 +91,13 @@ python training/sign/train_include.py --poses Pose_Signs --splits Train_Test_Spl
 export SARVAM_API_KEY=...     # optional natural voices: synaptix ask "..." --speak --voice sarvam
 ```
 
+## Location (Karnataka districts)
+
+Pass `--district` (for example `Mysuru` or `Mysore`; Kannada names work too) or save a default with
+`synaptix location Mysuru`. Legal answers then prefer Karnataka cards and "Talk to" names the district
+legal services authority, labour office and so on. `synaptix districts` lists all 31. No phone numbers or
+addresses are stored; office contact details are left to be checked at the district office.
+
 ## Project layout
 
 ```
@@ -96,17 +105,18 @@ synaptix/
   core/        types, language detection, router, translation, pipeline
   skills/      jargon, jurisdiction, legal, events
   kb/          knowledge-base loader + CPU retriever
-  llm/         llama.cpp wrapper and guardrail prompt
+  llm/         llama.cpp wrapper, rewrite guard, prerendered rewrites, evaluation
   outputs/     rule-based TTS (g2p.py + formant.py); optional Sarvam AI voices
   inputs/sign/ MediaPipe keypoints + sign classifier
 data/          glossary.yaml, legal_cards.yaml, jurisdiction.yaml, events.json
+data/states/   per-state cards, glossary and districts (Karnataka)
 training/sign/ record and train the ISL classifier
 ```
 
 ## Status
 
 Early prototype. All knowledge-base entries are marked `review: pending` until a law student and a
-native speaker verify them. Contributions of verified cards and translations are very welcome.
+native speaker verify them. The Karnataka and district data is new and entirely unverified. Contributions of verified cards and translations are very welcome.
 
 ## License
 

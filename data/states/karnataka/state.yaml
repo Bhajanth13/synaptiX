@@ -1,0 +1,25 @@
+# Karnataka state metadata. Nothing here is verified by a human yet (review: pending).
+# Portal URLs are filled only when the site was fetched and confirmed to be the official one;
+# otherwise url is "" and verify is true.
+name: Karnataka
+name_kn: ಕರ್ನಾಟಕ
+aliases: [karnataka, ka, ಕರ್ನಾಟಕ]
+portals:
+  - name: Bhoomi land records (Revenue Department)
+    url: https://landrecords.karnataka.gov.in
+    verify: false
+  - name: Seva Sindhu (Department of e-Governance)
+    url: https://sevasindhu.karnataka.gov.in
+    verify: false
+  - name: Kaveri property registration
+    url: ""
+    verify: true
+  - name: Karnataka State Legal Services Authority (KSLSA)
+    url: ""
+    verify: true
+helplines:
+  legal_aid: "15100"
+  emergency: "112"
+  women: "181"
+source: National helplines as published by the Government of India; portals as listed above
+review: pending

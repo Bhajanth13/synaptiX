@@ -1,0 +1,14 @@
+# Karnataka glossary entries. Same schema as data/glossary.yaml.
+
+- term: RTC (Pahani)
+  aliases: [rtc, pahani, record of rights tenancy and crops, ಪಹಣಿ, ಆರ್‌ಟಿಸಿ, ಆರ್ಟಿಸಿ]
+  plain: The Karnataka land record. It shows who holds a piece of land and what crop is grown on it. It is also called Pahani.
+  source: Karnataka Land Revenue Act, 1964
+  review: pending
+
+- term: Grama Panchayat
+  aliases: [grama panchayat, gram panchayat, village panchayat, ಗ್ರಾಮ ಪಂಚಾಯಿತಿ]
+  plain: The village-level local government in rural Karnataka. Above it are the Taluk Panchayat and the Zilla Panchayat.
+  plain_kn: ಗ್ರಾಮ ಮಟ್ಟದ ಸ್ಥಳೀಯ ಸರ್ಕಾರ. ಇದರ ಮೇಲೆ ತಾಲ್ಲೂಕು ಪಂಚಾಯಿತಿ ಮತ್ತು ಜಿಲ್ಲಾ ಪಂಚಾಯಿತಿ ಇವೆ.
+  source: Karnataka Gram Swaraj and Panchayat Raj Act, 1993
+  review: pending

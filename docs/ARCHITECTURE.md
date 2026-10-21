@@ -15,7 +15,7 @@
 |---|---|---|
 | Language detect | Unicode script | fastText LID for Devanagari languages (hi / mr / mwr) |
 | Router | Keyword rules (English + native) | Small trained intent classifier |
-| Retriever | IDF token overlap, no dependencies | Multilingual embeddings (e.g. MiniLM / IndicSBERT) |
+| Retriever | IDF token overlap, no dependencies; Indic-aware tokenizer (keeps combining signs) | Multilingual embeddings (e.g. MiniLM / IndicSBERT) |
 | Translation | Verified per-entry translations | IndicTrans2 distilled (offline, 22 languages) |
 | SLM | llama.cpp, any 1–2B GGUF (Sarvam-1, Gemma 3 1B, Qwen 2.5 1.5B) | Fine-tune on plain-language rewrites |
 | Speech in | — | AI4Bharat IndicConformer / faster-whisper |
@@ -36,6 +36,21 @@ query ─▶ detect language ─▶ (translate to English) ─▶ route ─▶ s
 skill ─▶ search verified KB ─▶ pick verified translation or SLM-simplify ─▶ Answer
 Answer{text, lang, sources, verified, escalate_to} ─▶ text / Sarvam TTS
 ```
+
+Location branch: `--district` / saved config ─▶ `core/location.resolve` ─▶ `Query.location`. The legal skill
+then searches national plus that state's cards and prefers a state card scoring at least 0.75x the best
+national one; escalation uses `escalate_offices` to name the district's offices (`KnowledgeBase.offices_text`)
+instead of the generic `escalate_to`. Jurisdiction answers append the district offices for the topic.
+Without a location, output is unchanged.
+
+## SLM guardrail and prerendered rewrites
+
+The SLM only sees the verified text and the term, never the user's question. `llm/guard.check_rewrite`
+rejects a rewrite that changes numbers, drops the term, adds names, uses childish phrases, adds more than
+two new content words or unsupported sentences, or is much shorter or longer than the source; the
+source text is shown instead. Passing rewrites are cached in memory. `synaptix prerender` stores them in
+`data/rewrites/en.yaml` (keyed by a hash of term + text, so edits invalidate them) so devices without the
+model still show the plain version. `synaptix eval-rewrites` scores the whole KB.
 
 ## Sign model results
 

@@ -16,6 +16,9 @@ def main(argv=None):
     a.add_argument("--voice", choices=["rule", "sarvam"], default="rule",
                    help="rule = hard-coded offline synthesizer (default); sarvam = Sarvam AI cloud voices")
 
+    a.add_argument("--district", help="your district (e.g. Mysuru); names the local offices to approach")
+    a.add_argument("--state", help="your state (e.g. karnataka)")
+
     t = sub.add_parser("say", help="speak any text with the offline rule-based TTS")
     t.add_argument("text")
     t.add_argument("--lang", choices=LANGUAGES)
@@ -38,12 +41,33 @@ def main(argv=None):
 
     sub.add_parser("languages", help="list supported languages")
 
+    d = sub.add_parser("districts", help="list the districts the knowledge base knows")
+    d.add_argument("--state", default="karnataka")
+
+    lc = sub.add_parser("location", help="show, save or clear your default district")
+    lc.add_argument("name", nargs="?")
+    lc.add_argument("--clear", action="store_true")
+
+    pr = sub.add_parser("prerender", help="rewrite verified entries with the SLM and store the passing ones")
+    pr.add_argument("--force", action="store_true", help="redo entries that already have a rewrite")
+    pr.add_argument("--out", help="output YAML (default data/rewrites/en.yaml)")
+
+    ev = sub.add_parser("eval-rewrites", help="score SLM rewrites of the knowledge base with the guard")
+    ev.add_argument("--prerendered", action="store_true", help="score only stored rewrites (no model needed)")
+    ev.add_argument("--json", action="store_true")
+
     args = p.parse_args(argv)
     if args.cmd == "languages":
         for code, info in LANGUAGES.items():
             voice = info["sarvam"] or f"{info['tts_fallback']} voice (fallback)"
             print(f"{code:4} {info['name']:10} offline TTS: yes   Sarvam: {voice}")
         return 0
+
+    if args.cmd in ("districts", "location", "prerender", "eval-rewrites") or (
+            args.cmd == "ask" and (args.district or args.state)):
+        rc = _location_commands(args)
+        if rc is not None:
+            return rc
 
     if args.cmd == "say":
         from synaptix.core.language import detect
@@ -74,7 +98,7 @@ def main(argv=None):
     elif args.cmd == "sign-file":
         ans = pipe.ask_signs([g for g, c in preds if g and c >= 0.3] or [preds[0][0]])
     elif args.cmd == "ask":
-        ans = pipe.ask(args.text, args.lang, args.skill)
+        ans = pipe.ask(args.text, args.lang, args.skill, district=args.district, state=args.state)
     else:
         ans = pipe.ask_signs(args.glosses)
     print(f"[{ans.skill}] " + ans.render())
@@ -82,6 +106,72 @@ def main(argv=None):
         from synaptix.outputs.tts import get_tts
         print("Audio:", get_tts(args.voice).synthesize(ans.text, ans.lang))
     return 0
+
+
+def _location_commands(args):
+    """Commands that need only the knowledge base. Returns an exit code, or None to continue."""
+    from synaptix.core import location as loc
+    from synaptix.kb.store import KnowledgeBase
+    kb = KnowledgeBase()
+
+    def resolve(name=None, district=None, state=None):
+        try:
+            return loc.resolve(kb, district=district, state=state)
+        except loc.UnknownLocation as e:
+            hint = f" Did you mean: {', '.join(e.suggestions)}?" if e.suggestions else ""
+            print(f"Unknown {'district' if district else 'state'} '{e.name}'.{hint} Run 'synaptix districts'.",
+                  file=sys.stderr)
+            return None
+
+    if args.cmd == "ask":
+        if args.district and resolve(district=args.district, state=args.state) is None:
+            return 2
+        if args.state and not args.district and resolve(state=args.state) is None:
+            return 2
+        return None
+    if args.cmd == "districts":
+        sid = kb.find_state(args.state)
+        if sid is None:
+            print(f"Unknown state '{args.state}'.", file=sys.stderr)
+            return 2
+        ds = sorted(kb.states[sid]["districts"], key=lambda d: d["id"])
+        for d in ds:
+            print(f"{d['id']:18} {d['name']:18} {d.get('name_kn', '')}")
+        print(f"{len(ds)} districts")
+        return 0
+    if args.cmd == "location":
+        if args.clear:
+            loc.clear_config()
+            print("Cleared.")
+            return 0
+        if not args.name:
+            cur = loc.load_config(kb)
+            print(f"Current: {cur.label}, {kb.states[cur.state]['meta']['name']}" if cur.district
+                  else (f"Current: {cur.label}" if cur else "Current: none"))
+            print(f"Config file: {loc.config_path()}")
+            return 0
+        try:
+            new = loc.resolve(kb, district=args.name)
+        except loc.UnknownLocation:
+            new = resolve(state=args.name)
+            if new is None:
+                return 2
+        loc.save_config(new)
+        print(f"Saved: {new.label}" + (f", {kb.states[new.state]['meta']['name']}" if new.district else ""))
+        return 0
+    from synaptix.llm import evaluate, rewrites
+    from synaptix.llm.slm import SLM
+    if args.cmd == "prerender":
+        slm = SLM()
+        if not slm.available:
+            print("No SLM installed (models/slm.gguf); nothing to prerender.")
+            return 1
+        written, rejected = evaluate.prerender(kb, slm, args.out or rewrites.DEFAULT_PATH, args.force)
+        print(f"{written} written, {len(rejected)} rejected")
+        for ref, reasons in rejected:
+            print(f"  {ref}: {', '.join(reasons)}")
+        return 0
+    return evaluate.main((["--prerendered"] if args.prerendered else []) + (["--json"] if args.json else []))
 
 
 if __name__ == "__main__":

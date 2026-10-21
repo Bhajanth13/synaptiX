@@ -6,6 +6,7 @@ class Query:
     text: str
     lang: str = "en"
     source: str = "text"  # text | voice | sign | ocr
+    location: object = None  # core.location.Location (typed loosely to avoid an import cycle)
 
 
 @dataclass
