@@ -113,11 +113,12 @@ class Net(nn.Module):
         return self.fc(self.drop(x))
 
 
-def train_one(seed, epochs, Xtr, ytr, te, yte, n_cls):
+def train_one(seed, epochs, Xtr, ytr, te, yte, n_cls, device="cpu"):
     """Train one network; returns (state dict as numpy, test probabilities from its final epoch)."""
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
-    net = Net(n_cls)
+    net = Net(n_cls).to(device)
+    te = te.to(device)
     opt = torch.optim.AdamW(net.parameters(), lr=2e-3, weight_decay=1e-3)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=2e-3, total_steps=epochs * (len(Xtr) // 64 + 1))
     for ep in range(epochs):
@@ -125,8 +126,8 @@ def train_one(seed, epochs, Xtr, ytr, te, yte, n_cls):
         order = rng.permutation(len(Xtr))
         for b in range(0, len(order), 64):
             idx = order[b: b + 64]
-            xb = torch.tensor(np.stack([features(augment(Xtr[i], rng)) for i in idx]), dtype=torch.float32)
-            loss = nn.functional.cross_entropy(net(xb), torch.tensor(ytr[idx]), label_smoothing=0.1)
+            xb = torch.tensor(np.stack([features(augment(Xtr[i], rng)) for i in idx]), dtype=torch.float32).to(device)
+            loss = nn.functional.cross_entropy(net(xb), torch.tensor(ytr[idx]).to(device), label_smoothing=0.1)
             opt.zero_grad()
             loss.backward()
             opt.step()
@@ -136,10 +137,10 @@ def train_one(seed, epochs, Xtr, ytr, te, yte, n_cls):
             with torch.no_grad():
                 logits = net(te)
             print(f"seed {seed} epoch {ep + 1}: loss {loss.item():.3f}  test top-1 "
-                  f"{(logits.argmax(1).numpy() == yte).mean():.1%}", flush=True)
+                  f"{(logits.argmax(1).cpu().numpy() == yte).mean():.1%}", flush=True)
     # The final epoch is kept (no picking the best epoch on the test set, so the reported score is honest).
-    return ({k.replace(".", "__"): v.detach().numpy() for k, v in net.state_dict().items()},
-            torch.softmax(logits, 1).numpy())
+    return ({k.replace(".", "__"): v.detach().cpu().numpy() for k, v in net.state_dict().items()},
+            torch.softmax(logits, 1).cpu().numpy())
 
 
 def main():
