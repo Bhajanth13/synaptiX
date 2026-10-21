@@ -33,6 +33,13 @@ def main(argv=None):
     lv.add_argument("--model", choices=["include", "custom"], default="include",
                     help="include = pretrained 263-sign ISL model (default); custom = your trained classifier")
 
+    sp = sub.add_parser("spell-live", help="fingerspell letters/digits to the webcam, then ask the spelled text")
+    sp.add_argument("--camera", type=int, default=0)
+    sp.add_argument("--lang", choices=LANGUAGES, default="en")
+
+    si = sub.add_parser("spell-image", help="read fingerspelled letters/digits from image files")
+    si.add_argument("images", nargs="+")
+
     sf = sub.add_parser("sign-file", help="recognise ISL signs in a video file")
     sf.add_argument("video")
     sf.add_argument("--model", choices=["include", "custom"], default="include")
@@ -78,6 +85,19 @@ def main(argv=None):
         print("Audio:", tts.synthesize(args.text, lang))
         return 0
 
+    if args.cmd == "spell-image":
+        import cv2
+        from synaptix.inputs.sign.fingerspell import FingerspellModel, HandDetector
+        model, det = FingerspellModel(), HandDetector()
+        for path in args.images:
+            img = cv2.imread(path)
+            if img is not None and max(img.shape[:2]) < 256:
+                f = 256 / max(img.shape[:2])
+                img = cv2.resize(img, None, fx=f, fy=f)
+            letter, conf = model.predict(det.hands(img) if img is not None else [], min_conf=0.0)
+            print(f"{path}: {letter or '(no hand found)'} {conf:.2f}")
+        return 0
+
     if args.cmd == "sign-file":
         from synaptix.inputs.sign.live import recognize_file
         preds = recognize_file(args.video, args.model, args.whole)
@@ -88,7 +108,14 @@ def main(argv=None):
 
     from synaptix.core.pipeline import Pipeline
     pipe = Pipeline()
-    if args.cmd == "sign-live":
+    if args.cmd == "spell-live":
+        from synaptix.inputs.sign.fingerspell import spell_live
+        text = spell_live(args.camera)
+        print("Spelled:", text or "(nothing)")
+        if not text:
+            return 1
+        ans = pipe.ask(text.lower(), args.lang)
+    elif args.cmd == "sign-live":
         from synaptix.inputs.sign.live import recognize
         glosses = recognize(args.camera, model=args.model)
         print("Signs:", " ".join(glosses) or "(none recognised)")

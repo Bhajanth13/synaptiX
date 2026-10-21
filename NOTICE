@@ -5,3 +5,11 @@ This product includes a sign-language model (models/isl_include.npz) trained on 
 INCLUDE dataset of Indian Sign Language (Sridhar et al., ACM MM 2020), using the pose keypoints
 released by AI4Bharat OpenHands (https://github.com/AI4Bharat/OpenHands) under the
 Creative Commons Attribution 4.0 licence (https://zenodo.org/records/6674324).
+
+This product includes a fingerspelling model (models/isl_fingerspell.npz) trained on:
+- "Indian Sign Language (ISL)" by Prathum Arikeri (Kaggle), CC BY-SA 4.0
+  https://www.kaggle.com/datasets/prathumarikeri/indian-sign-language-isl
+- "Indian Sign Language (ISLRTC referred)" by Atharva Dumbre (Kaggle), CC BY-NC-SA 4.0
+  https://www.kaggle.com/datasets/atharvadumbre/indian-sign-language-islrtc-referred
+Because of the second dataset's licence, models/isl_fingerspell.npz is for non-commercial use;
+retrain with only the first dataset (training/sign/train_fingerspell.py) for commercial use.

@@ -67,3 +67,19 @@ The Holistic extractor matters because the dataset was made with MediaPipe Holis
 OpenHands INCLUDE checkpoints were also tried and score ~2% on the released pose files even with an
 exact port, so SynaptiX trains its own. Note: the released INCLUDE `.pkl` files store x scaled by frame
 height and y by frame width; the training loader corrects for this.
+
+## Fingerspelling model results
+
+`synaptix/inputs/sign/fingerspell.py`: MediaPipe hand landmarks → MLP, 36 classes (0–9, A–Z), numpy-only.
+Lets people spell names and words outside the 263-word sign vocabulary (`synaptix spell-live`).
+
+| Training data | Test | Result |
+|---|---|---|
+| Arikeri (1 signer) | held-out last 20% of frames, same signer | 98.7% |
+| Arikeri (1 signer) | ISLRTC images (other signers) | **33%** — a single signer does not generalise |
+| Arikeri + ISLRTC (shipped) | held-out last 20% of frames per class | 92.9% |
+| Arikeri + ISLRTC (shipped) | Soumya Kushwaha set (cut-out hands on synthetic backgrounds, odd viewpoints) | 30% (hands found in 77%) |
+
+Real accuracy on a new person at a webcam is unknown and likely between these numbers; it needs a test
+with signers who are in neither dataset. Reproduce with `training/sign/train_fingerspell.py` and
+`training/sign/eval_fingerspell.py`, or the Colab notebook `notebooks/train_fingerspell_colab.ipynb`.

@@ -5,7 +5,9 @@ __pycache__/
 models/*
 !models/README.md
 !models/isl_include.npz
+!models/isl_fingerspell.npz
 .cache/
 *.wav
 .env
 training/sign/recordings/
+models/fingerspell_features_*

@@ -88,6 +88,9 @@ synaptix sign-live            # sign to the webcam (pretrained 263-sign model), 
 synaptix sign-file clip.mp4 --ask   # recognise signs in a video file
 python training/sign/train_include.py --poses Pose_Signs --splits Train_Test_Split   # retrain (needs torch)
 # or train on any Kaggle sign-video dataset in Google Colab: notebooks/train_isl_colab.ipynb
+synaptix spell-live                 # fingerspell a word (A-Z, 0-9) to the webcam, then ask it
+synaptix spell-image a.jpg b.jpg    # read fingerspelled letters from photos
+# retrain fingerspelling on the Kaggle ISL image datasets in Colab: notebooks/train_fingerspell_colab.ipynb
 export SARVAM_API_KEY=...     # optional natural voices: synaptix ask "..." --speak --voice sarvam
 ```
 

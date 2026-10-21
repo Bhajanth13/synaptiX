@@ -200,3 +200,59 @@ nb = {"cells": cells, "metadata": {"accelerator": "GPU", "colab": {"provenance":
       "nbformat": 4, "nbformat_minor": 0}
 Path(__file__).with_name("train_isl_colab.ipynb").write_text(json.dumps(nb, indent=1))
 print("wrote notebooks/train_isl_colab.ipynb")
+
+# ---- second notebook: fingerspelling (A-Z, 1-9) from the Kaggle ISL image dataset ----
+cells = []
+md("""
+# SynaptiX: train ISL fingerspelling (A–Z, 1–9) on the Kaggle ISL dataset
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YajatGhule/synaptiX/blob/main/notebooks/train_fingerspell_colab.ipynb)
+
+Datasets (one folder per class):
+- [Indian Sign Language (ISL)](https://www.kaggle.com/datasets/prathumarikeri/indian-sign-language-isl) by Prathum Arikeri, CC BY-SA 4.0 — 42,745 images, digits 1–9 and A–Z, **one signer**.
+- [Indian Sign Language (ISLRTC referred)](https://www.kaggle.com/datasets/atharvadumbre/indian-sign-language-islrtc-referred) by Atharva Dumbre, CC BY-NC-SA 4.0 (non-commercial) — 36,000 images, 0–9 and A–Z, several signers and backgrounds.
+
+Why both: a model trained on the first set alone scored only 33% on the second set's signers. Mixing signers is what makes it generalise.
+
+MediaPipe finds the hands in each image, and a small network learns the hand shapes from the
+landmarks (not the pixels), so it doesn't learn the dataset's dark background. The result,
+`isl_fingerspell.npz`, drops into SynaptiX's `models/` folder and runs on a CPU with numpy only
+(`synaptix spell-live`).
+
+**Honest caveat:** frames come from continuous video, so validation holds out the last 20% of frames per
+letter in each dataset (not random frames). The same people still appear in training, so expect lower
+accuracy on new signers. J and Z involve movement in ISL; still images only capture one moment.
+""")
+code("""
+!git clone -q https://github.com/YajatGhule/synaptiX.git /content/synaptiX 2>/dev/null || git -C /content/synaptiX pull -q
+!pip install -q "mediapipe>=0.10.30,<1" opencv-python-headless kagglehub pyyaml
+""")
+md("## Kaggle login\n\nAdd `KAGGLE_USERNAME` and `KAGGLE_KEY` in Colab secrets (key icon), or log in when asked. Public datasets often download without login.")
+code("""
+import os
+try:
+    from google.colab import userdata
+    os.environ["KAGGLE_USERNAME"] = userdata.get("KAGGLE_USERNAME")
+    os.environ["KAGGLE_KEY"] = userdata.get("KAGGLE_KEY")
+except Exception:
+    pass
+""")
+md("## Train\n\nExtracts hand landmarks from ~79,000 images (≈20–40 min on Colab's CPUs, cached), then trains (≈5 min).")
+code("""
+%cd /content/synaptiX
+!python training/sign/train_fingerspell.py --kaggle prathumarikeri/indian-sign-language-isl atharvadumbre/indian-sign-language-islrtc-referred --rot 0.4 --epochs 60
+""")
+md("## Download the model")
+code("""
+from google.colab import files
+files.download("/content/synaptiX/models/isl_fingerspell.npz")
+""")
+md("## Try it on your own photos (optional)")
+code("""
+from google.colab import files
+names = list(files.upload())
+!python -m synaptix.cli spell-image {" ".join(names)}
+""")
+nb["cells"] = cells
+Path(__file__).with_name("train_fingerspell_colab.ipynb").write_text(json.dumps(nb, indent=1))
+print("wrote notebooks/train_fingerspell_colab.ipynb")
